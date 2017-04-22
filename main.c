@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "board.h"
+#include "tabuleiro.h"
 
 int main() {
-    Board b = createBoard();
-    if(!readBoard(b)) {
+    Tblr t = criaTblr();
+    if(!leTblr(t)) {
         puts("Erro na leitura do tabuleiro");
         return -1;
     }
-    printBoard(b);
+    imprimeTblr(t);
 
     printf("Ler o tabuleiro (em matriz?)\n");
     printf("Enquanto pilha não vazia:\n");

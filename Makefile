@@ -4,7 +4,7 @@ CFLAGS = -std=c99 -O2 -W -Wall -g
 
 all: main
 
-main: main.c board.o
+main: main.c tabuleiro.o filha.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean:

@@ -1,5 +1,6 @@
 #include "filha.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 struct No {
     void *conteudo;
