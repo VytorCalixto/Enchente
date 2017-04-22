@@ -11,3 +11,5 @@ run_tests:
     artifacts:
         paths:
             - tests/tabuleiros.txt
+    tags:
+        - ubuntu
