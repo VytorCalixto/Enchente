@@ -1,8 +1,17 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include "board.h"
 
-int main(int argc, char const *argv[]) {
+int main() {
+    Board b = createBoard();
+    if(!readBoard(b)) {
+        puts("Erro na leitura do tabuleiro");
+        return -1;
+    }
+    printBoard(b);
+
     printf("Ler o tabuleiro (em matriz?)\n");
     printf("Enquanto pilha não vazia:\n");
     printf("\tPega os adjacentes do grupo (retorna os pesos dos filhos = montar o grafo)\n");
