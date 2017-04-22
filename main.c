@@ -10,19 +10,19 @@ int main() {
         puts("Erro na leitura do tabuleiro");
         return -1;
     }
-    imprimeTblr(t);
+    // imprimeTblr(t);
 
-    printf("Ler o tabuleiro (em matriz?)\n");
-    printf("Enquanto pilha não vazia:\n");
-    printf("\tPega os adjacentes do grupo (retorna os pesos dos filhos = montar o grafo)\n");
-    printf("\tEscolhe filho de maior peso\n");
-    printf("\tEmpilha os outros filhos\n");
-    printf("\tSE tamanho do caminho atual + filhos do nodo atual >= menor caminho: VOLTA!\n");
-    printf("\tSE soma do peso total = tamanho do tabuleiro: VOLTA! Retorna o caminho encontrado\n");
-    printf("\n\n\n##BONUS##\n");
-    printf("Olhar os vizinhos dos vizinhos no estado atual e atribuir bônus:\n");
-    printf("\tSe vizinho tem vizinho que não tenho: adicionar valor do vizinho do vizinho como bônus\n");
-    printf("\tSe vizinho tem vizinho que tenho, mas em número maior: adicionar diferença\n");
+    // printf("Ler o tabuleiro (em matriz?)\n");
+    // printf("Enquanto pilha não vazia:\n");
+    // printf("\tPega os adjacentes do grupo (retorna os pesos dos filhos = montar o grafo)\n");
+    // printf("\tEscolhe filho de maior peso\n");
+    // printf("\tEmpilha os outros filhos\n");
+    // printf("\tSE tamanho do caminho atual + filhos do nodo atual >= menor caminho: VOLTA!\n");
+    // printf("\tSE soma do peso total = tamanho do tabuleiro: VOLTA! Retorna o caminho encontrado\n");
+    // printf("\n\n\n##BONUS##\n");
+    // printf("Olhar os vizinhos dos vizinhos no estado atual e atribuir bônus:\n");
+    // printf("\tSe vizinho tem vizinho que não tenho: adicionar valor do vizinho do vizinho como bônus\n");
+    // printf("\tSe vizinho tem vizinho que tenho, mas em número maior: adicionar diferença\n");
     return 0;
 }
 

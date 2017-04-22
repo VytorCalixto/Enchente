@@ -1,0 +1,13 @@
+stages:
+    - test
+
+before_script:
+    - make
+
+run_tests:
+    stage: test
+    script:
+        - make test
+    artifacts:
+        paths:
+            - tests/tabuleiros.txt
