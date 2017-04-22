@@ -2,6 +2,7 @@ stages:
     - test
 
 before_script:
+    - apt-get install build-essential
     - make
 
 run_tests:
