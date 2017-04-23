@@ -4,7 +4,7 @@
 tempo_max=500
 
 # tamanhos do tabuleiro
-tams=(8 16 32 64 128 256 512 1024)
+tams=(8 16 32 64 128 512 1024 2048 4096)
 
 # lista de cores
 cores=(4 8 16 32 64)
@@ -17,6 +17,7 @@ CYAN='\033[0;36m'
 NC='\033[0m' # Sem cor
 
 echo -ne "" > tabuleiros.txt
+echo -ne "" > tempos.txt
 
 echo "Iniciado testes"
 for i in ${tams[*]}
@@ -61,6 +62,7 @@ do
     echo -ne "${BLUE}Tempo médio com tamanho ${i}: ${S_medio_total}."
     printf "%03d" ${M_medio_total}
     echo -e "s (${T_medio_cor})${NC}\n"
+    echo -e "${i} \t ${M_medio_total}" >> tempos.txt
 done
 
 fs=$(cat tabuleiros.txt | wc -l)
@@ -69,6 +71,6 @@ if [ ${fs} -gt "1" ]; then
     cat tabuleiros.txt
     exit 1
 else
-    echo -e "${GREEN}Nenhum tabuleiro passou do tempo limite${NC}"
+    echo -e "${GREEN}Nenhum tabuleiro passou do tempo limite de ${tempo_max} milisegundos${NC}"
     exit 0
 fi

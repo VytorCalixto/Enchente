@@ -4,4 +4,5 @@ main
 a.out
 *.in
 test
-tests/tabuleiros.txt
+tests/*.txt
+tests/tempos.png

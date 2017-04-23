@@ -10,8 +10,12 @@ run_tests:
     stage: test
     script:
         - make test
+        - cd tests
+        - gnuplot "tempos.plot"
     artifacts:
         paths:
             - tests/tabuleiros.txt
+            - tests/tempos.txt
+            - tests/tempos.png
     tags:
         - ubuntu
