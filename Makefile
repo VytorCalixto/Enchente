@@ -8,7 +8,7 @@ test: main
 	cd tests; \
 	$(CC) -std=c99 -o test geraMapa.c; \
 	chmod +x runTests.sh; \
-	runTests.sh
+	./runTests.sh
 
 main: main.c tabuleiro.o filha.o
 	$(CC) $(CFLAGS) -o $@ $^
