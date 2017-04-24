@@ -10,7 +10,7 @@ test: main
 	chmod +x runTests.sh; \
 	./runTests.sh
 
-main: main.c tabuleiro.o filha.o no.o 
+main: main.c tabuleiro.o filha.o lista.o no.o 
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean:
