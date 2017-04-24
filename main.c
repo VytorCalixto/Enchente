@@ -3,26 +3,28 @@
 #include <stdio.h>
 #include <time.h>
 #include "tabuleiro.h"
+#include "jogador.h"
 
 int main() {
     Tblr t = criaTblr();
+    // Aloca o tabuleiro em um único array em vez de um "array de arrays"   
     if(!leTblr(t)) {
         puts("Erro na leitura do tabuleiro");
         return -1;
     }
-    // imprimeTblr(t);
+    imprimeTblr(t);
 
-    // printf("Ler o tabuleiro (em matriz?)\n");
-    // printf("Enquanto pilha não vazia:\n");
-    // printf("\tPega os adjacentes do grupo (retorna os pesos dos filhos = montar o grafo)\n");
-    // printf("\tEscolhe filho de maior peso\n");
-    // printf("\tEmpilha os outros filhos\n");
-    // printf("\tSE tamanho do caminho atual + filhos do nodo atual >= menor caminho: VOLTA!\n");
-    // printf("\tSE soma do peso total = tamanho do tabuleiro: VOLTA! Retorna o caminho encontrado\n");
-    // printf("\n\n\n##BONUS##\n");
-    // printf("Olhar os vizinhos dos vizinhos no estado atual e atribuir bônus:\n");
-    // printf("\tSe vizinho tem vizinho que não tenho: adicionar valor do vizinho do vizinho como bônus\n");
-    // printf("\tSe vizinho tem vizinho que tenho, mas em número maior: adicionar diferença\n");
+    // declara o grafo ponderado e seu primeiro nodo 
+    grafo = criaGrafo(t);
+    if(grafo == NULL)) {
+        puts("Erro na criacao do grafo");
+        return -1;
+    }
+    // faz o jogador jogar o jogo a partir do tabuleiro dado
+    // o retorno do jogador sera um vetor contendo os numeros referentes a menor jogada encontrada por ele
+    int *jogadas;
+    jogadas = Joga(grafo, t);
+
     return 0;
 }
 
