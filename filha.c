@@ -1,11 +1,7 @@
-#include "filha.h"
 #include <stdbool.h>
 #include <stdlib.h>
-
-struct No {
-    void *conteudo;
-    No anterior, proximo;
-};
+#include "filha.h"
+#include "no.h"
 
 struct Filha {
     unsigned int tamanho;
@@ -24,58 +20,46 @@ unsigned int tamanhoFilha(Filha f) {
     return f->tamanho;
 }
 
-No primeiroNo(Filha f) {
+No primeiroNoFilha(Filha f) {
     if(f->tamanho == 0) {
         return NULL;
     }
     No n = f->primeiro;
-    f->primeiro = f->primeiro->proximo;
-    n->anterior = NULL;
-    n->proximo = NULL;
+    f->primeiro = getSucessorNo(f->primeiro);
+    setSucessorNo(n, NULL);
+    setAntecessorNo(n, NULL);
     return n;
 }
 
-No ultimoNo(Filha f) {
+No ultimoNoFilha(Filha f) {
     if(f->tamanho == 0) {
         return NULL;
     }
     No n = f->ultimo;
-    f->ultimo = f->ultimo->anterior;
-    n->anterior = NULL;
-    n->proximo = NULL;
+    f->ultimo = getAntecessorNo(f->ultimo);
+    setSucessorNo(n, NULL);
+    setAntecessorNo(n, NULL);
     return n;
 }
 
-No sucessorNo(No n) {
-    return n->proximo;
-}
-
-No antecessorNo(No n) {
-    return n->anterior;
-}
-
-void *conteudo(No n) {
-    return n->conteudo;
-}
-
-No insere(void *conteudo, Filha f) {
-    No novo = malloc(sizeof(struct No));
+No insereFilha(void *conteudo, Filha f) {
+    No novo = criaNo();
 
     if(!novo) return NULL;
 
-    novo->conteudo = conteudo;
-    novo->anterior = f->ultimo;
+    setConteudo(novo, conteudo);
+    setAntecessorNo(novo, f->ultimo);
     ++f->tamanho;
     return f->ultimo = novo;
 }
 
-bool destroi(Filha f, bool destroi(void *)) {
+bool destroiFilha(Filha f, bool destroi(void *)) {
     No n;
     bool ok=true;
 
-    while( (n = primeiroNo(f)) ) {
+    while( (n = primeiroNoFilha(f)) ) {
         if(destroi)
-            ok &= destroi(conteudo(n));
+            ok &= destroi(getConteudo(n));
         free(n);
     }
     free(f);

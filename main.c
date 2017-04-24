@@ -3,27 +3,27 @@
 #include <stdio.h>
 #include <time.h>
 #include "tabuleiro.h"
-#include "jogador.h"
+// #include "jogador.h"
 
 int main() {
     Tblr t = criaTblr();
-    // Aloca o tabuleiro em um único array em vez de um "array de arrays"   
+    // Aloca o tabuleiro em um único array em vez de um "array de arrays"
     if(!leTblr(t)) {
         puts("Erro na leitura do tabuleiro");
         return -1;
     }
     imprimeTblr(t);
 
-    // declara o grafo ponderado e seu primeiro nodo 
-    grafo = criaGrafo(t);
-    if(grafo == NULL)) {
-        puts("Erro na criacao do grafo");
-        return -1;
-    }
-    // faz o jogador jogar o jogo a partir do tabuleiro dado
-    // o retorno do jogador sera um vetor contendo os numeros referentes a menor jogada encontrada por ele
-    int *jogadas;
-    jogadas = Joga(grafo, t);
+    // // declara o grafo ponderado e seu primeiro nodo
+    // grafo = criaGrafo(t);
+    // if(grafo == NULL)) {
+    //     puts("Erro na criacao do grafo");
+    //     return -1;
+    // }
+    // // faz o jogador jogar o jogo a partir do tabuleiro dado
+    // // o retorno do jogador sera um vetor contendo os numeros referentes a menor jogada encontrada por ele
+    // int *jogadas;
+    // jogadas = Joga(grafo, t);
 
     return 0;
 }
