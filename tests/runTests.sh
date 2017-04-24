@@ -4,7 +4,7 @@
 tempo_max=500
 
 # tamanhos do tabuleiro
-tams=(8 16 32 64 128 512 1024 2048 4096)
+tams=(8 16 32 64 128 512 1024)
 
 # lista de cores
 cores=(4 8 16 32 64)
