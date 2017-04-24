@@ -1,6 +1,7 @@
 #ifndef _PLAYER_
 #define _PLAYER_
 #include <stdbool.h>
+#include "tabuleiro.h"
 
 // Nodo do grafo que permitira encontrar o menor numero de jogadas
 typedef struct Nodo *Nodo;
@@ -22,5 +23,5 @@ int checaCor(Tblr t, int posicao);
 int * verAdjacentes(Tblr t, int posicao, int cor);
 
 // Ve quais sao os filhos deste nodo, ou seja, os grupos de cores que estao ligados ao grupo de quadrados referentes a este nodo. 
-void alocaFilhos(Nodo n)
+void alocaFilhos(Nodo n);
 #endif

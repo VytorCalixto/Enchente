@@ -6,8 +6,8 @@
 struct Nodo {
     // Jogada que foi tomada para chegar neste nodo (ou seja, cor do grupo de posicoes atual)
     int jogada;
-    // Filhos deste nodo
-    Nodo * filhos[];
+    // Filhos deste nodo, sera um array de structs Nodo
+    Nodo * filhos;
     // "Quadrados pintados" ate aquele nodo(que sera um vetor contendo certas posicoes do vetor "celulas")
     int * quadradosPintados;
     // peso eh a quantidade de quadrados pintados deste grupo
@@ -15,7 +15,7 @@ struct Nodo {
 };
 
 int checaCor(Tblr t, int posicao){
-	return t->celulas[posicao]->cor;
+	return (t->celulas[posicao]->cor);
 }
 
 int * verAdjacentes(Tblr t, int posicao, int cor){
@@ -26,7 +26,7 @@ void alocaFilhos(Nodo n){
 	//TODO: criar algoritmo que, dado um nodo, aloca seus filhos
 }
 
-Nodo criaGrafo(t){
+Nodo criaGrafo(Tblr t){
 	Nodo n = malloc(sizeof(struct Nodo));
 	if(!n) return NULL;
 
@@ -35,12 +35,12 @@ Nodo criaGrafo(t){
 
 	// Ver quais sao os quadrados pintados deste nodo(grupo de quadrados adjacentes da mesma cor, dada uma posicao)
 	n->quadradosPintados = verAdjacentes(t, 0, n->jogada);
-	if(quadradosPintados == NULL) return NULL;
-	n.peso = (sizeof(n.quadradosPintados)/sizeof(int));
+	if(n->quadradosPintados == NULL) return NULL;
+	n->peso = (sizeof(n->quadradosPintados)/sizeof(int));
 
 	// Ver qual e a quantidade de filhos deste Nodo e aloca espaco para eles
 	alocaFilhos(n);
-	if(n.filhos == NULL) return NULL;
+	if(n->filhos == NULL) return NULL;
 
 	return n; 
 }
