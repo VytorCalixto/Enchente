@@ -2,21 +2,21 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "tabuleiro.h"
-#include "jogador.h"
+#include "libs/tabuleiro.h"
+#include "libs/jogador.h"
 
 int main() {
     Tblr t = criaTblr();
-    // Aloca o tabuleiro em um único array em vez de um "array de arrays"   
+    // Aloca o tabuleiro em um único array em vez de um "array de arrays"
     if(!leTblr(t)) {
         puts("Erro na leitura do tabuleiro");
         return -1;
     }
     imprimeTblr(t);
 
-    // declara o grafo ponderado e seu primeiro nodo 
-    grafo = criaGrafo(t);
-    if(grafo == NULL)) {
+    // declara o grafo ponderado e seu primeiro nodo
+    Nodo grafo = criaGrafo(t);
+    if(grafo == NULL) {
         puts("Erro na criacao do grafo");
         return -1;
     }
