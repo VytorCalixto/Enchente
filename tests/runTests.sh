@@ -7,7 +7,7 @@ tempo_max=10000 #10s
 tams=(4 8 16 25 32 50 64 75 100 128)
 
 # lista de cores
-cores=(2 3 4 5 6 7 8)
+cores=(2 3 4 5 6 7 8 16 32)
 
 #-- Cores do terminal
 RED='\033[0;31m'
@@ -29,9 +29,12 @@ do
     do
         echo "Número de cores: ${cor}"
         T_soma_cor=0
+        T_max_cor=0
         for j in $(seq 1 $i)
         do
-            echo -ne "Tabuleiro com ${i} linhas e ${cor} cores ${i}x${j}"\\r
+            echo -ne "Tabuleiro com ${i} linhas e ${cor} cores: ${i}x${j} (T max: $(($T_max_cor/1000000000))."
+            printf "%03d" $(($T_max_cor/1000000))
+            echo -ne ")"\\r
             semente=$RANDOM
             # echo "Usando semente: ${semente}"
             ./test $i $j $cor $semente
@@ -44,6 +47,10 @@ do
             S=$(($T_gasto/1000000000))
             # tempo em milisegundos
             M=$(($T_gasto/1000000))
+            # tempo máximo por cor
+            if [ $T_max_cor -lt $T_gasto ]; then
+                T_max_cor=$T_gasto
+            fi
             if (($M>$tempo_max)); then
                 echo -e "\n${RED}Tabuleiro ${i} ${j} ${cor} ${semente} levou mais de ${tempo_max} milisegundos: ${S}.${M}s${NC}"
                 echo "${i} ${j} ${cor} ${semente}" >> tabuleiros.txt
