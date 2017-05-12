@@ -3,7 +3,7 @@ stages:
 
 before_script:
     - apt-get update
-    - apt-get -y install build-essential make autoconf gcc
+    - apt-get -y install build-essential make autoconf gcc gnuplot
     - make
 
 test:
