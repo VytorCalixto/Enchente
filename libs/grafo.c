@@ -100,10 +100,6 @@ void tabuleiroParaGrafo(Tblr t, Grafo g) {
     return;
 }
 
-void agrupaGrafo(Grafo g) {
-    return;
-}
-
 int *buscaCaminho(Grafo g) {
     int *caminho = malloc(sizeof(int));
     return caminho;

@@ -12,8 +12,6 @@ void criaArco(Vertice v, Vertice w);
 
 void tabuleiroParaGrafo(Tblr t, Grafo g);
 
-void agrupaGrafo(Grafo g);
-
 int *buscaCaminho(Grafo g);
 
 #endif
