@@ -9,7 +9,7 @@ before_script:
 test:
     stage: test
     script:
-        - valgrind --leak-check=full main
+        - valgrind --leak-check=full ./main
         - make test
         - cd tests
         - gnuplot "tempos.plot"
