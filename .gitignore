@@ -6,3 +6,4 @@ a.out
 test
 tests/*.txt
 tests/tempos.png
+massif.out*
