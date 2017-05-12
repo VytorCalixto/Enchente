@@ -4,10 +4,10 @@
 tempo_max=500
 
 # tamanhos do tabuleiro
-tams=(8 16 32 64 128 512 1024)
+tams=(4 8 16 32 64 128)
 
 # lista de cores
-cores=(4 8 16 32 64)
+cores=(2 4 8 16)
 
 #-- Cores do terminal
 RED='\033[0;31m'

@@ -10,9 +10,10 @@ test: main
 	chmod +x runTests.sh; \
 	./runTests.sh
 
-main: main.c tabuleiro.o filha.o lista.o no.o 
+main: main.c libs/tabuleiro.o libs/grafo.o libs/vertice.o libs/filha.o libs/lista.o libs/no.o
 	$(CC) $(CFLAGS) -o $@ $^
 
 clean:
 	$(RM) *.o
+	$(RM) libs/*.o
 	$(RM) tests/*.in

@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "tabuleiro.h"
-// #include "jogador.h"
+#include "libs/tabuleiro.h"
 
 int main() {
     Tblr t = criaTblr();
