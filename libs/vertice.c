@@ -7,7 +7,7 @@ Vertice criaVertice() {
 
     v->cor = -1;
     v->peso = 0;
-    Lista pais = constroiLista();
-    Lista filhos = constroiLista();
+    v->pais = constroiLista();
+    v->filhos = constroiLista();
     return v;
 }
