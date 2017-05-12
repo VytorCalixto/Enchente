@@ -4,7 +4,7 @@
 tempo_max=10000 #10s
 
 # tamanhos do tabuleiro
-tams=(4 8 16 32 50 64 80 92 100)
+tams=(4 8 16 25 32 50 64 75 100 128)
 
 # lista de cores
 cores=(2 3 4 5 6 7 8)
@@ -17,7 +17,8 @@ CYAN='\033[0;36m'
 NC='\033[0m' # Sem cor
 
 echo -ne "" > tabuleiros.txt
-echo -ne "" > tempos.txt
+echo -ne "#Tam tabuleiro\t#N cores\t#Tempo médio\n" > tempos.txt
+echo -ne "#Tam tabuleiro\t#Tempo médio\n" > medias.txt
 
 echo "Iniciado testes"
 for i in ${tams[*]}
@@ -55,14 +56,15 @@ do
         echo -ne "\n${CYAN}Tempo médio com ${cor} cores: ${S_medio_cor}."
         printf "%03d" ${M_medio_cor}
         echo -e "s (${T_medio_cor})${NC}\n"
+        echo -e "${i}\t${cor}\t${M_medio_cor}" >> tempos.txt
     done
     T_medio_total=$(( $T_soma_total/($i * ${#cores[*]}) ))
     S_medio_total=$(($T_medio_total/1000000000))
     M_medio_total=$(($T_medio_total/1000000))
     echo -ne "${BLUE}Tempo médio com tamanho ${i}: ${S_medio_total}."
     printf "%03d" ${M_medio_total}
-    echo -e "s (${T_medio_cor})${NC}\n"
-    echo -e "${i} \t ${M_medio_total}" >> tempos.txt
+    echo -e "s (${T_medio_total})${NC}\n"
+    echo -e "${i}\t${M_medio_total}" >> medias.txt
 done
 
 fs=$(cat tabuleiros.txt | wc -l)

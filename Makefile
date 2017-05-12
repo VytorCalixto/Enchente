@@ -16,4 +16,4 @@ main: main.c libs/tabuleiro.o libs/grafo.o libs/vertice.o libs/filha.o libs/list
 clean:
 	$(RM) *.o
 	$(RM) libs/*.o
-	$(RM) tests/*.in
+	$(RM) tests/*.time

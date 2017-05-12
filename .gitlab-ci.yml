@@ -12,10 +12,13 @@ test:
         - make test
         - cd tests
         - gnuplot "tempos.plot"
+        - gnuplot medias.plot
     artifacts:
         paths:
             - tests/tabuleiros.txt
             - tests/tempos.txt
+            - tests/medias.txt
             - tests/tempos.png
+            - tests/medias.png
     tags:
         - ubuntu
