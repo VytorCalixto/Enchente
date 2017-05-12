@@ -2,18 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "tabuleiro.h"
-
-struct Celula {
-    // Cor da célula
-    int cor;
-    // Se a célula já foi visitada
-    bool visitada;
-};
-
-struct Tblr {
-    int x, y, cores;
-    Celula *celulas;
-};
+#include "vertice.h"
+#include "grafo.h"
 
 Tblr criaTblr() {
     Tblr t = malloc(sizeof(struct Tblr));
@@ -36,6 +26,7 @@ bool leTblr(Tblr t) {
             // Para acessar uma matrix [X][Y] em um vetor fazemos i*Y + j
             Celula c = malloc(sizeof(struct Celula));
             c->visitada = false;
+            c->vert = NULL;
             scanf("%d", &(c->cor));
             t->celulas[i * y + j] = c;
         }

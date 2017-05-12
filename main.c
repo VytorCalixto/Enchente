@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <time.h>
 #include "libs/tabuleiro.h"
-#include "libs/jogador.h"
 
 int main() {
     Tblr t = criaTblr();
@@ -14,16 +13,16 @@ int main() {
     }
     imprimeTblr(t);
 
-    // declara o grafo ponderado e seu primeiro nodo
-    Nodo grafo = criaGrafo(t);
-    if(grafo == NULL) {
-        puts("Erro na criacao do grafo");
-        return -1;
-    }
-    // faz o jogador jogar o jogo a partir do tabuleiro dado
-    // o retorno do jogador sera um vetor contendo os numeros referentes a menor jogada encontrada por ele
-    int *jogadas;
-    jogadas = Joga(grafo, t);
+    // // declara o grafo ponderado e seu primeiro nodo
+    // grafo = criaGrafo(t);
+    // if(grafo == NULL)) {
+    //     puts("Erro na criacao do grafo");
+    //     return -1;
+    // }
+    // // faz o jogador jogar o jogo a partir do tabuleiro dado
+    // // o retorno do jogador sera um vetor contendo os numeros referentes a menor jogada encontrada por ele
+    // int *jogadas;
+    // jogadas = Joga(grafo, t);
 
     return 0;
 }

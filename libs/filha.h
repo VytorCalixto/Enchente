@@ -1,6 +1,7 @@
 #ifndef _FILHA_
 #define _FILHA_
 #include <stdbool.h>
+#include "no.h"
 
 // Filha é uma estrutura que pode ser vista como Fila ou Pilha
 typedef struct Filha *Filha;
@@ -16,24 +17,15 @@ Filha constroiFilha();
 unsigned int tamanhoFilha(Filha f);
 
 // Remove o primeiro nó da filha f ou retorna NULL se f for vazia
-No primeiroNo(Filha f);
+No primeiroNoFilha(Filha f);
 
 // Remove o último nó da filha f ou retorna NULL se f for vazia
-No ultimoNo(Filha f);
-
-// Devolve o nó sucessor de n ou NULL se n é o último nó da filha
-No sucessorNo(No n);
-
-// Devolve o nó antecessor de n ou NULL se n é o primeiro nó da filha
-No antecessorNo(No n);
-
-// Devolve o conteúdo de n
-void *conteudo(No n);
+No ultimoNoFilha(Filha f);
 
 // Insere um novo nó no fim da Filha f
 //
 // Devolve o nó recém criado ou NULL em caso de falha
-No insere(void *conteudo, Filha f);
+No insereFilha(void *conteudo, Filha f);
 
 // Desaloca a filha f e todos os seus nós
 //
@@ -42,7 +34,7 @@ No insere(void *conteudo, Filha f);
 // para cada nó n da filha
 //
 // devolve true em caso de sucesso ou false em caso de falha
-bool destroi(Filha f, bool destroi(void *));
+bool destroiFilha(Filha f, bool destroi(void *));
 
 // Impreme todos os nós da filha f
 //
