@@ -76,7 +76,12 @@ int destroiLista(Lista l, int destroi(void *)) {
 //      ou NULL em caso de falha
 
 No insereLista(void *conteudo, Lista l) {
-
+    // Não insere se já estiver na lista
+    for(No n = primeiroNoLista(l); n; n = getSucessorNo(n)) {
+        if(getConteudo(n) == conteudo) {
+            return n;
+        }
+    }
     No novo = criaNo();
 
     if ( ! novo )

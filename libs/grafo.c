@@ -27,68 +27,83 @@ void tabuleiroParaGrafo(Tblr t, Grafo g) {
     for(int i=0; i < t->x; ++i) {
         for(int j=0; j < t->y; ++j) {
             Celula c = t->celulas[i * t->y + j];
-            Vertice v = NULL;
-            if(c->vert == NULL) {
-                v = criaVertice();
-                v->cor = c->cor;
-                v->peso = 1;
-                c->vert = v;
-                insereVertice(g, v);
-            } else {
-                v = c->vert;
-            }
-            //------Vizinhos
+            // Primeiro, olho ao meu redor e vejo se posso me inserir em algum grupo existente
             Celula cima, baixo, esq, dir;
+            // Olho no sentido anti-horário porque é mais provável que o cara acima e a esquerda de mim já tenham vértices
             // Cima
             if(i > 0) {
                 cima = t->celulas[(i-1) * t->y + j];
-                if(cima->vert == NULL) {
-                    Vertice w = criaVertice();
-                    w->cor = cima->cor;
-                    w->peso = 1;
-                    c->vert = w;
-                    insereVertice(g, w);
-                    criaArco(v, w);
-                    criaArco(w, v);
-                }
-            }
-            // Direita
-            if(j < t->y - 1) {
-                dir = t->celulas[i * t->y + (j + 1)];
-                if(dir->vert == NULL) {
-                    Vertice w = criaVertice();
-                    w->cor = dir->cor;
-                    w->peso = 1;
-                    c->vert = w;
-                    insereVertice(g, w);
-                    criaArco(v, w);
-                    criaArco(w, v);
-                }
-            }
-            // Baixo
-            if(i < t->x - 1) {
-                baixo = t->celulas[(i + 1) * t->y + j];
-                if(baixo->vert == NULL) {
-                    Vertice w = criaVertice();
-                    w->cor = baixo->cor;
-                    w->peso = 1;
-                    c->vert = w;
-                    insereVertice(g, w);
-                    criaArco(v, w);
-                    criaArco(w, v);
+                if(cima->vert && (cima->cor == c->cor)) {
+                    c->vert = cima->vert;
+                    ++(c->vert->peso);
                 }
             }
             // Esquerda
             if(j > 0) {
                 esq = t->celulas[i * t->y + (j - 1)];
-                if(esq->vert == NULL) {
-                    Vertice w = criaVertice();
-                    w->cor = esq->cor;
-                    w->peso = 1;
-                    c->vert = w;
-                    insereVertice(g, w);
-                    criaArco(v, w);
-                    criaArco(w, v);
+                if(esq->vert != NULL && (esq->cor == c->cor)) {
+                    c->vert = esq->vert;
+                    ++(c->vert->peso);
+                }
+            }
+            // Baixo
+            if(i < t->x - 1) {
+                baixo = t->celulas[(i + 1) * t->y + j];
+                if(baixo->vert != NULL && (baixo->cor == c->cor)) {
+                    c->vert = baixo->vert;
+                    ++(c->vert->peso);
+                }
+            }
+            // Direita
+            if(j < t->y - 1) {
+                dir = t->celulas[i * t->y + (j + 1)];
+                if(dir->vert != NULL && (dir->cor == c->cor)) {
+                    c->vert = dir->vert;
+                    ++(c->vert->peso);
+                }
+            }
+
+            // Se não me agrupei com ninguém
+            if(c->vert == NULL) {
+                // Crio um vértice para mim
+                Vertice v = criaVertice();
+                v->cor = c->cor;
+                v->peso = 1;
+                c->vert = v;
+                insereVertice(g, v);
+            }
+
+            // Com um vértice meu, crio arcos para os vizinhos
+            // Cima
+            if(i > 0) {
+                cima = t->celulas[(i-1) * t->y + j];
+                if(cima->vert && (cima->cor != c->cor)) {
+                    criaArco(c->vert, cima->vert);
+                    criaArco(cima->vert, c->vert);
+                }
+            }
+            // Direita
+            if(j < t->y - 1) {
+                dir = t->celulas[i * t->y + (j + 1)];
+                if(dir->vert && (dir->cor != c->cor)) {
+                    criaArco(c->vert, dir->vert);
+                    criaArco(dir->vert, c->vert);
+                }
+            }
+            // Baixo
+            if(i < t->x - 1) {
+                baixo = t->celulas[(i + 1) * t->y + j];
+                if(baixo->vert && (baixo->cor != c->cor)) {
+                    criaArco(c->vert, baixo->vert);
+                    criaArco(baixo->vert, c->vert);
+                }
+            }
+            // Esquerda
+            if(j > 0) {
+                esq = t->celulas[i * t->y + (j - 1)];
+                if(esq->vert && (esq->cor != c->cor)) {
+                    criaArco(c->vert, esq->vert);
+                    criaArco(esq->vert, c->vert);
                 }
             }
         }
