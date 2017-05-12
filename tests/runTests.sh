@@ -19,6 +19,7 @@ NC='\033[0m' # Sem cor
 echo -ne "" > tabuleiros.txt
 echo -ne "#Tam tabuleiro\t#N cores\t#Tempo médio\n" > tempos.txt
 echo -ne "#Tam tabuleiro\t#Tempo médio\n" > medias.txt
+echo -ne "#Tam tabuleiro\t#N cores\t#Tempo médio\n" > piores.txt
 
 echo "Iniciado testes"
 for i in ${tams[*]}
@@ -64,6 +65,7 @@ do
         printf "%03d" ${M_medio_cor}
         echo -e "s (${T_medio_cor})${NC}\n"
         echo -e "${i}\t${cor}\t${M_medio_cor}" >> tempos.txt
+        echo -e "${i}\t${cor}\t$(($T_max_cor/1000000))" >> piores.txt
     done
     T_medio_total=$(( $T_soma_total/($i * ${#cores[*]}) ))
     S_medio_total=$(($T_medio_total/1000000000))
