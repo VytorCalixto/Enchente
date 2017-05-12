@@ -44,3 +44,15 @@ void imprimeTblr(Tblr t) {
     }
     return;
 }
+
+bool destroiTblr(Tblr t) {
+    for(int i=0; i < t->x; ++i) {
+        for(int j=0; j < t->y; ++j) {
+            free(t->celulas[i*t->y + j]);
+        }
+    }
+    free(t->celulas);
+    free(t);
+    t = NULL;
+    return true;
+}

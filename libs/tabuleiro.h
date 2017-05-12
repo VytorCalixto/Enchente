@@ -31,4 +31,6 @@ bool leTblr(Tblr t);
 // Imprime o tabuleiro
 void imprimeTblr(Tblr t);
 
+bool destroiTblr(Tblr t);
+
 #endif
