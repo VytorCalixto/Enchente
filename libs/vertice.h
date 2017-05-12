@@ -13,4 +13,6 @@ typedef struct Vertice *Vertice;
 
 Vertice criaVertice();
 
+int destroiVertice(void *v);
+
 #endif

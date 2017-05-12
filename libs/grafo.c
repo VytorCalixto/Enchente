@@ -111,7 +111,9 @@ void tabuleiroParaGrafo(Tblr t, Grafo g) {
     return;
 }
 
-int *buscaCaminho(Grafo g) {
-    int *caminho = malloc(sizeof(int));
-    return caminho;
+void destroiGrafo(Grafo g) {
+    destroiLista(g->vertices, destroiVertice);
+    free(g);
+    g = NULL;
+    return;
 }

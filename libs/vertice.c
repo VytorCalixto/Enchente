@@ -11,3 +11,13 @@ Vertice criaVertice() {
     v->filhos = constroiLista();
     return v;
 }
+
+int destroiVertice(void *v) {
+    Vertice w = (Vertice) v;
+    // Como os outros vértices também estão no grafo, deixamos isso a cargo dele
+    destroiLista(w->pais, NULL);
+    destroiLista(w->filhos, NULL);
+    free(w);
+    w = NULL;
+    return 1;
+}
