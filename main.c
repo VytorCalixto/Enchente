@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <time.h>
 #include "libs/tabuleiro.h"
 #include "libs/no.h"
@@ -20,11 +21,17 @@ int main() {
     // Lista com o grupo inicial
     Lista grupo = constroiLista();
     insereLista(t->celulas[0]->vert, grupo); // A célula na posição 0 do array é a célula no canto superior esquerdo
+    t->celulas[0]->vert->grupo = true;
 
-    // Desaloca lista do grupo
-    destroiLista(grupo, NULL);
     // Desaloca tabuleiro
     destroiTblr(t);
+
+    // printf("Número de grupos: %d\n", tamanhoLista(g->vertices));
+    Lista jogadas = constroiLista();
+
+    destroiLista(jogadas, NULL);
+    // Desaloca lista do grupo
+    destroiLista(grupo, NULL);
     // Desaloca grafo
     destroiGrafo(g);
     return 0;

@@ -7,7 +7,7 @@ tempo_max=10000 #10s
 tams=(4 8 16 25 32 50 64 75 100 128)
 
 # lista de cores
-cores=(2 3 4 5 6 7 8 16 32)
+cores=(2 3 4 5 6 7 8 10)
 
 #-- Cores do terminal
 RED='\033[0;31m'

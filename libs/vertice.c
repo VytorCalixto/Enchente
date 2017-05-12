@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdbool.h>
 #include "vertice.h"
 #include "lista.h"
 
@@ -7,6 +8,7 @@ Vertice criaVertice() {
 
     v->cor = -1;
     v->peso = 0;
+    v->grupo = false;
     v->pais = constroiLista();
     v->filhos = constroiLista();
     return v;

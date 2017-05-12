@@ -8,7 +8,7 @@ struct Lista {
 
     unsigned int tamanho;
     int padding; // só pra evitar warning
-    No primeiro;
+    No primeiro, ultimo;
 };
 //---------------------------------------------------------------------------
 // devolve o número de nós da Lista l
@@ -34,6 +34,7 @@ Lista constroiLista(void) {
     return NULL;
 
     l->primeiro = NULL;
+    l->ultimo = NULL;
     l->tamanho = 0;
 
     return l;
@@ -76,6 +77,31 @@ int destroiLista(Lista l, int destroi(void *)) {
 //      ou NULL em caso de falha
 
 No insereLista(void *conteudo, Lista l) {
+    No novo = criaNo();
+
+    if ( ! novo )
+    return NULL;
+
+    setConteudo(novo, conteudo);
+    ++l->tamanho;
+    if(l->tamanho == 1) {
+        l->primeiro = novo;
+    }
+    if(l->ultimo) {
+        setSucessorNo(l->ultimo, novo);
+    }
+    l->ultimo = novo;
+
+    return novo;
+}
+
+//---------------------------------------------------------------------------
+// insere um novo nó na Lista l cujo conteúdo é p
+//
+// devolve o No recém-criado
+//      ou NULL em caso de falha
+
+No insereUnicoLista(void *conteudo, Lista l) {
     // Não insere se já estiver na lista
     for(No n = primeiroNoLista(l); n; n = getSucessorNo(n)) {
         if(getConteudo(n) == conteudo) {
@@ -88,10 +114,16 @@ No insereLista(void *conteudo, Lista l) {
     return NULL;
 
     setConteudo(novo, conteudo);
-    setSucessorNo(novo, primeiroNoLista(l));
     ++l->tamanho;
+    if(l->tamanho == 1) {
+        l->primeiro = novo;
+    }
+    if(l->ultimo) {
+        setSucessorNo(l->ultimo, novo);
+    }
+    l->ultimo = novo;
 
-    return l->primeiro = novo;
+    return novo;
 }
 
 //------------------------------------------------------------------------------

@@ -25,6 +25,15 @@ No primeiroNoLista(Lista l);
 //      ou NULL em caso de falha
 
 No insereLista(void *conteudo, Lista l);
+
+//------------------------------------------------------------------------------
+// insere um Novo nó na Lista l cujo conteúdo é p se p não estiver na lista
+//
+// devolve o No recém-criado
+//      ou NULL em caso de falha
+
+No insereUnicoLista(void *conteudo, Lista l);
+
 //------------------------------------------------------------------------------
 // cria uma Lista vazia e a devolve
 //

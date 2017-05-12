@@ -19,8 +19,8 @@ Vertice insereVertice(Grafo g, Vertice v) {
 }
 
 void criaArco(Vertice v, Vertice w) {
-    insereLista(w, v->filhos);
-    insereLista(v, w->pais);
+    insereUnicoLista(w, v->filhos);
+    insereUnicoLista(v, w->pais);
 }
 
 void tabuleiroParaGrafo(Tblr t, Grafo g) {
