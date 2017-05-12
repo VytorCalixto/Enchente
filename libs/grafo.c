@@ -4,10 +4,6 @@
 #include "vertice.h"
 #include "tabuleiro.h"
 
-struct Grafo {
-    Lista vertices;
-};
-
 Grafo criaGrafo() {
     Grafo g = malloc(sizeof(struct Grafo));
 

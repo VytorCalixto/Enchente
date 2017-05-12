@@ -2,6 +2,10 @@
 #define _GRAFO_
 #include "tabuleiro.h"
 
+struct Grafo {
+    Lista vertices;
+};
+
 typedef struct Grafo *Grafo;
 
 Grafo criaGrafo();
