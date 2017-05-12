@@ -6,9 +6,10 @@ before_script:
     - apt-get -y install build-essential make autoconf gcc
     - make
 
-run_tests:
+test:
     stage: test
     script:
+        - valgrind --leak-check=full main
         - make test
         - cd tests
         - gnuplot "tempos.plot"

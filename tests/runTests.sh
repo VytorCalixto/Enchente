@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # tempo máximo para executar, em milisegundos
-tempo_max=500
+tempo_max=10000 #10s
 
 # tamanhos do tabuleiro
-tams=(4 8 16 32 64 128)
+tams=(4 8 16 32 50 64 80 92 100)
 
 # lista de cores
-cores=(2 4 8 16)
+cores=(2 3 4 5 6 7 8)
 
 #-- Cores do terminal
 RED='\033[0;31m'
@@ -67,7 +67,7 @@ done
 
 fs=$(cat tabuleiros.txt | wc -l)
 if [ ${fs} -gt "1" ]; then
-    echo -e "${RED}${fs} tabuleiro(s) passou do tempo limite de ${tempo_max} milisegundos:${NC}"
+    echo -e "${RED}${fs} tabuleiro(s) passou(passaram) do tempo limite de ${tempo_max} milisegundos:${NC}"
     cat tabuleiros.txt
     exit 1
 else
