@@ -13,7 +13,7 @@ test:
         - cd tests
         - gnuplot "tempos.plot"
         - gnuplot "medias.plot"
-        - gnuplo "piores.plot"
+        - gnuplot "piores.plot"
     artifacts:
         paths:
             - tests/tabuleiros.txt
