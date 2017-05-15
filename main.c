@@ -26,8 +26,16 @@ int main() {
     // Desaloca tabuleiro
     destroiTblr(t);
 
-    // printf("Número de grupos: %d\n", tamanhoLista(g->vertices));
     Lista jogadas = constroiLista();
+
+    // PARA DEBUGAR: Imprime o grafo tabuleiro em formato dot com os vértices já
+    // "consumidos" pintados de vermelho
+    printf("Número de grupos: %d\n", tamanhoLista(g->vertices));
+    FILE* debug = fopen("./debug.out", "w+");
+    if(debug) {
+        grafoParaDot(g, grupo, debug);
+    }
+    fclose(debug);
 
     destroiLista(jogadas, NULL);
     // Desaloca lista do grupo

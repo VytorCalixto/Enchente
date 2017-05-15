@@ -3,6 +3,7 @@
 #include "lista.h"
 #include "vertice.h"
 #include "tabuleiro.h"
+#include <stdio.h>
 
 Grafo criaGrafo() {
     Grafo g = malloc(sizeof(struct Grafo));
@@ -116,4 +117,24 @@ void destroiGrafo(Grafo g) {
     free(g);
     g = NULL;
     return;
+}
+
+void grafoParaDot(Grafo g, Lista grupo, FILE* fp) {
+    fprintf(fp, "strict graph g {\n");
+    // Pinta os nós que estão no grupo de vermelho
+    for(No n = primeiroNoLista(grupo); n; n = getSucessorNo(n)) {
+        Vertice v = (Vertice) getConteudo(n);
+        fprintf(fp, "\t\"%p\" [color=red];\n", v);
+    }
+    // Imprime o grafo
+    for(No n = primeiroNoLista(g->vertices); n; n = getSucessorNo(n)) {
+        Vertice pai = (Vertice) getConteudo(n);
+        fprintf(fp, "\t\"%p\" [label=\"cor=%d,peso=%d\"];\n", pai, pai->cor, pai->peso);
+        for(No m = primeiroNoLista(pai->filhos); m; m = getSucessorNo(m)) {
+            Vertice filho = (Vertice) getConteudo(m);
+            fprintf(fp, "\t\"%p\" [label=\"cor=%d,peso=%d\"];\n", filho, filho->cor, filho->peso);
+            fprintf(fp, "\t\"%p\" -- \"%p\";\n", pai, filho);
+        }
+    }
+    fprintf(fp, "}\n");
 }

@@ -1,6 +1,7 @@
 #ifndef _GRAFO_
 #define _GRAFO_
 #include "tabuleiro.h"
+#include <stdio.h>
 
 struct Grafo {
     Lista vertices;
@@ -17,5 +18,7 @@ void criaArco(Vertice v, Vertice w);
 void tabuleiroParaGrafo(Tblr t, Grafo g);
 
 void destroiGrafo(Grafo g);
+
+void grafoParaDot(Grafo g, Lista grupo, FILE* fp);
 
 #endif
