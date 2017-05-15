@@ -7,6 +7,7 @@
 #include "libs/no.h"
 #include "libs/lista.h"
 #include "libs/grafo.h"
+#include "libs/jogador.h"
 
 int main() {
     Tblr t = criaTblr();
@@ -26,11 +27,10 @@ int main() {
     // Desaloca tabuleiro
     destroiTblr(t);
 
-    Lista jogadas = constroiLista();
+    Lista jogadas = Joga(g, grupo);
 
     // PARA DEBUGAR: Imprime o grafo tabuleiro em formato dot com os vértices já
     // "consumidos" pintados de vermelho
-    printf("Número de grupos: %d\n", tamanhoLista(g->vertices));
     FILE* debug = fopen("./debug.out", "w+");
     if(debug) {
         grafoParaDot(g, grupo, debug);
