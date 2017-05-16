@@ -8,7 +8,7 @@
 Lista Joga(Grafo g, Lista grupo){
     Lista jogadas = constroiLista();
     //TODO: A Logica toda do jogo vai ficar aqui
-    int counter;
+    int counter = 1;
     do {
         // Pega os filhos do grupo
         Lista filhos = filhosGrupo(grupo);
@@ -47,9 +47,9 @@ Lista Joga(Grafo g, Lista grupo){
         destroiLista(filhos, NULL);
         destroiLista(coresFilhos, destroiVertice);
 
-        // PARA DEBUG!! Imprime as últimas 10 jogadas em um arquivo
+        // // PARA DEBUG!! Imprime as últimas 10 jogadas em um arquivo
         // char str[32];
-        // sprintf(str, "./jogada%d.out", counter % 10);
+        // sprintf(str, "./jogada%d.out", counter );
         // FILE* debug = fopen(str, "w+");
         // if(debug) {
         //     grafoParaDot(g, grupo, debug);
