@@ -6,6 +6,7 @@
 #include "grafo.h"
 
 Lista Joga(Grafo g, Lista grupo){
+    Lista jogadas = constroiLista();
     //TODO: A Logica toda do jogo vai ficar aqui
 
     // Pega os filhos do grupo
@@ -14,8 +15,10 @@ Lista Joga(Grafo g, Lista grupo){
     //      - RAIZ: grupo
     //      - FILHOS: Cores alcancáveis a partir da raiz
     //      - NETOS: Cores alcançáveis a partir dos filhos que NÃO são alcançáveis a partir da raiz
+    //          Só é necessário para calcular o bônus de cada filho
+    Lista coresFilhos = agrupaCores(filhos);
     // Seleciona o melhor filho baseado em peso(filho) + bônus(filho) // (filho com a maior soma de filho e peso)
-    // O bônus e calculado da seguinte forma:
+    // O bônus é calculado da seguinte forma:
     //      - Soma o valor de cada neto (que não é alcançável pela raiz)
     //      - Em caso de empate da soma peso + bônus:
     //          - Escolher o filho que tem mais netos da mesma cor de um filho
@@ -23,7 +26,8 @@ Lista Joga(Grafo g, Lista grupo){
 
     // Limpa as coisas
     destroiLista(filhos, NULL);
-    return constroiLista();
+    destroiLista(coresFilhos, destroiVertice);
+    return jogadas;
 }
 
 Lista filhosGrupo(Lista l) {
@@ -36,4 +40,30 @@ Lista filhosGrupo(Lista l) {
         }
     }
     return filhos;
+}
+
+Lista agrupaCores(Lista l) {
+    Lista agrupa = constroiLista();
+    for(No n = primeiroNoLista(l); n; n = getSucessorNo(n)) {
+        Vertice v = (Vertice) getConteudo(n);
+        // Verifica se a cor já está na lista
+        bool estaNaLista = false;
+        for(No m = primeiroNoLista(agrupa); m; m = getSucessorNo(m)) {
+            Vertice w = (Vertice) getConteudo(m);
+            // Se está, soma o peso do vértice
+            if(w->cor == v->cor) {
+                w->peso += v->peso;
+                estaNaLista = true;
+            }
+        }
+        // Se não está, cria um vértice para a cor
+        if(!estaNaLista) {
+            Vertice w = criaVertice();
+            w->cor = v->cor;
+            w->peso = v->peso;
+            insereLista(w, agrupa);
+        }
+    }
+
+    return agrupa;
 }

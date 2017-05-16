@@ -11,4 +11,7 @@ Lista Joga(Grafo g, Lista grupo);
 
 // Retorna todos os filhos de uma lista de vértices
 Lista filhosGrupo(Lista l);
+
+// Retorna uma lista de vértices com as cores e pesos agrupadas a partir de l
+Lista agrupaCores(Lista l);
 #endif
