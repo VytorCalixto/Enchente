@@ -29,13 +29,12 @@ int main() {
 
     Lista jogadas = Joga(g, grupo);
 
-    // PARA DEBUGAR: Imprime o grafo tabuleiro em formato dot com os vértices já
-    // "consumidos" pintados de vermelho
-    FILE* debug = fopen("./debug.out", "w+");
-    if(debug) {
-        grafoParaDot(g, grupo, debug);
+    printf("%d\n", tamanhoLista(jogadas));
+    for(No n = primeiroNoLista(jogadas); n; n = getSucessorNo(n)) {
+        int cor = (int) getConteudo(n);
+        printf("%d ", cor);
     }
-    fclose(debug);
+    puts("");
 
     destroiLista(jogadas, NULL);
     // Desaloca lista do grupo
