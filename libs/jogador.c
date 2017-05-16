@@ -42,18 +42,6 @@ Lista filhosGrupo(Lista grupoPai) {
     return filhos;
 }
 
-int calculaBonus(Vertice v, Lista filhos) {
-    int bonus = 0;
-    for(No n = primeiroNoLista(v->filhos); n; n = getSucessorNo(n)) {
-        Vertice filho = getConteudo(n);
-        // Se o filho não está na lsita filhos e não está no grupo de vértices já consumidos
-        if(!pertenceLista(filho, filhos) && !filho->grupo) {
-            bonus += filho->peso;
-        }
-    }
-    return bonus;
-}
-
 Lista agrupaCores(Lista filhos) {
     Lista agrupa = constroiLista();
     for(No n = primeiroNoLista(filhos); n; n = getSucessorNo(n)) {
@@ -80,4 +68,16 @@ Lista agrupaCores(Lista filhos) {
     }
 
     return agrupa;
+}
+
+int calculaBonus(Vertice v, Lista filhos) {
+    int bonus = 0;
+    for(No n = primeiroNoLista(v->filhos); n; n = getSucessorNo(n)) {
+        Vertice filho = getConteudo(n);
+        // Se o filho não está na lsita filhos e não está no grupo de vértices já consumidos
+        if(!pertenceLista(filho, filhos) && !filho->grupo) {
+            bonus += filho->peso;
+        }
+    }
+    return bonus;
 }
