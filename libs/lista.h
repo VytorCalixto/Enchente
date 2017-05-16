@@ -1,6 +1,7 @@
 #ifndef _LISTA_
 #define _LISTA_
 #include "no.h"
+#include <stdbool.h>
 
 //-----------------------------------------------------------------------------
 // (apontador para) Lista encadeada
@@ -49,16 +50,16 @@ Lista constroiLista(void);
 //
 // para cada nó n da Lista.
 //
-// devolve 1 em caso de sucesso,
-//      ou 0 em caso de falha
+// devolve true em caso de sucesso,
+//      ou false em caso de falha
 
-int destroiLista(Lista l, int destroi(void *));
+bool destroiLista(Lista l, bool destroi(void *));
 
 //------------------------------------------------------------------------------
 // remove o No de endereço rNo de l
 // se destroi != NULL, executa destroi(conteudo(rNo))
-// devolve 1, em caso de sucesso
-//         0, se rNo não for um No de l
+// devolve true, em caso de sucesso
+//         false, se rNo não for um No de l
 
-int removeNoLista(struct Lista *l, struct No *rNo, int destroi(void *));
+bool removeNoLista(struct Lista *l, struct No *rNo, bool destroi(void *));
 #endif

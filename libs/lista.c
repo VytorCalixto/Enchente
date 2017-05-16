@@ -1,4 +1,5 @@
 #include <malloc.h>
+#include <stdbool.h>
 #include "lista.h"
 #include "no.h"
 //---------------------------------------------------------------------------
@@ -51,10 +52,10 @@ Lista constroiLista(void) {
 // devolve 1 em caso de sucesso,
 //      ou 0 em caso de falha
 
-int destroiLista(Lista l, int destroi(void *)) {
+bool destroiLista(Lista l, bool destroi(void *)) {
 
     No p;
-    int ok=1;
+    bool ok=true;
 
     while ( (p = primeiroNoLista(l)) ) {
 
@@ -132,8 +133,8 @@ No insereUnicoLista(void *conteudo, Lista l) {
 // devolve 1, em caso de sucesso
 //         0, se rNo não for um No de l
 
-int removeNo(struct Lista *l, struct No *rNo, int destroi(void *)) {
-    int r = 1;
+bool removeNo(struct Lista *l, struct No *rNo, bool destroi(void *)) {
+    bool r = true;
     if (l->primeiro == rNo) {
         l->primeiro = getSucessorNo(rNo);
         if (destroi != NULL) {
@@ -154,5 +155,5 @@ int removeNo(struct Lista *l, struct No *rNo, int destroi(void *)) {
             return r;
         }
     }
-    return 0;
+    return false;
 }

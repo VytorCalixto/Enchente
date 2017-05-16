@@ -15,12 +15,12 @@ Vertice criaVertice() {
     return v;
 }
 
-int destroiVertice(void *v) {
+bool destroiVertice(void *v) {
     Vertice w = (Vertice) v;
     // Como os outros vértices também estão no grafo, deixamos isso a cargo dele
     destroiLista(w->pais, NULL);
     destroiLista(w->filhos, NULL);
     free(w);
     w = NULL;
-    return 1;
+    return true;
 }
