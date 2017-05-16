@@ -6,6 +6,7 @@
 struct Vertice {
     int cor;
     int peso;
+    int bonus;
     bool grupo;
     Lista pais;
     Lista filhos;
