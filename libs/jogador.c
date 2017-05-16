@@ -108,7 +108,7 @@ int calculaBonus(Vertice v, Lista filhos) {
     for(No n = primeiroNoLista(v->filhos); n; n = getSucessorNo(n)) {
         Vertice filho = getConteudo(n);
         // Se o filho não está na lsita filhos e não está no grupo de vértices já consumidos
-        if(!pertenceLista(filho, filhos) && !filho->grupo) {
+        if(!filho->grupo && !pertenceLista(filho, filhos)) {
             bonus += filho->peso;
         }
     }

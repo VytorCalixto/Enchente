@@ -4,10 +4,10 @@
 tempo_max=10000 #10s
 
 # tamanhos do tabuleiro
-tams=(4 8 16 32 64 128 256)
+tams=(4 8 16 32 64 128)
 
 # lista de cores
-cores=(2 4 8 16 32)
+cores=(2 4 8 16)
 
 #-- Cores do terminal
 RED='\033[0;31m'
@@ -40,7 +40,7 @@ do
             # echo "Usando semente: ${semente}"
             ./test $i $j $cor $semente
             T_inicial=$(date +%s%N)
-            ../main < "/tmp/${semente}.in"
+            ../main < "/tmp/${semente}.in" > /dev/null
             T_gasto=$(($(date +%s%N) - $T_inicial))
             T_soma_cor=$(($T_gasto + $T_soma_cor))
             T_soma_total=$(($T_gasto + $T_soma_total))
