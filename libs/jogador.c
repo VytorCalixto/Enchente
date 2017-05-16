@@ -30,9 +30,9 @@ Lista Joga(Grafo g, Lista grupo){
     return jogadas;
 }
 
-Lista filhosGrupo(Lista l) {
+Lista filhosGrupo(Lista grupoPai) {
     Lista filhos = constroiLista();
-    for(No n = primeiroNoLista(l); n; n = getSucessorNo(n)) {
+    for(No n = primeiroNoLista(grupoPai); n; n = getSucessorNo(n)) {
         Vertice pai = (Vertice) getConteudo(n);
         for(No m = primeiroNoLista(pai->filhos); m; m = getSucessorNo(m)) {
             Vertice filho = (Vertice) getConteudo(m);
@@ -42,9 +42,21 @@ Lista filhosGrupo(Lista l) {
     return filhos;
 }
 
-Lista agrupaCores(Lista l) {
+int calculaBonus(Vertice v, Lista filhos) {
+    int bonus = 0;
+    for(No n = primeiroNoLista(v->filhos); n; n = getSucessorNo(n)) {
+        Vertice filho = getConteudo(n);
+        // Se o filho não está na lsita filhos e não está no grupo de vértices já consumidos
+        if(!pertenceLista(filho, filhos) && !filho->grupo) {
+            bonus += filho->peso;
+        }
+    }
+    return bonus;
+}
+
+Lista agrupaCores(Lista filhos) {
     Lista agrupa = constroiLista();
-    for(No n = primeiroNoLista(l); n; n = getSucessorNo(n)) {
+    for(No n = primeiroNoLista(filhos); n; n = getSucessorNo(n)) {
         Vertice v = (Vertice) getConteudo(n);
         // Verifica se a cor já está na lista
         bool estaNaLista = false;
@@ -53,6 +65,7 @@ Lista agrupaCores(Lista l) {
             // Se está, soma o peso do vértice
             if(w->cor == v->cor) {
                 w->peso += v->peso;
+                w->bonus += calculaBonus(v, filhos);
                 estaNaLista = true;
             }
         }
@@ -61,6 +74,7 @@ Lista agrupaCores(Lista l) {
             Vertice w = criaVertice();
             w->cor = v->cor;
             w->peso = v->peso;
+            w->bonus = calculaBonus(v, filhos);
             insereLista(w, agrupa);
         }
     }
