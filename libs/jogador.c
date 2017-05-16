@@ -6,9 +6,10 @@
 #include "grafo.h"
 
 Lista Joga(Grafo g, Lista grupo){
-	//TODO: A Logica toda do jogo vai ficar aqui
+    //TODO: A Logica toda do jogo vai ficar aqui
 
     // Pega os filhos do grupo
+    Lista filhos = filhosGrupo(grupo);
     // Monta a árvore de busca:
     //      - RAIZ: grupo
     //      - FILHOS: Cores alcancáveis a partir da raiz
@@ -19,5 +20,20 @@ Lista Joga(Grafo g, Lista grupo){
     //      - Em caso de empate da soma peso + bônus:
     //          - Escolher o filho que tem mais netos da mesma cor de um filho
     // Após escolher um filho, repete o algoritmo até não terem mais filhos do grupo
+
+    // Limpa as coisas
+    destroiLista(filhos, NULL);
     return constroiLista();
+}
+
+Lista filhosGrupo(Lista l) {
+    Lista filhos = constroiLista();
+    for(No n = primeiroNoLista(l); n; n = getSucessorNo(n)) {
+        Vertice pai = (Vertice) getConteudo(n);
+        for(No m = primeiroNoLista(pai->filhos); m; m = getSucessorNo(m)) {
+            Vertice filho = (Vertice) getConteudo(m);
+            insereUnicoLista(filho, filhos);
+        }
+    }
+    return filhos;
 }
