@@ -62,4 +62,9 @@ bool destroiLista(Lista l, bool destroi(void *));
 //         false, se rNo não for um No de l
 
 bool removeNoLista(struct Lista *l, struct No *rNo, bool destroi(void *));
+
+//------------------------------------------------------------------------------
+// retorna o nó que contém *conteudo se está na lista l,
+//      NULL caso contrário
+No pertenceLista(void *conteudo, Lista l);
 #endif

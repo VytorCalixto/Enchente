@@ -147,6 +147,7 @@ bool removeNo(struct Lista *l, struct No *rNo, bool destroi(void *)) {
     for (No n = primeiroNoLista(l); getSucessorNo(n); n = getSucessorNo(n)) {
         if (getSucessorNo(n) == rNo) {
             setSucessorNo(n, getSucessorNo(rNo));
+            setAntecessorNo(getSucessorNo(rNo), n);
             if (destroi != NULL) {
                 r = destroi(getConteudo(rNo));
             }
@@ -156,4 +157,13 @@ bool removeNo(struct Lista *l, struct No *rNo, bool destroi(void *)) {
         }
     }
     return false;
+}
+
+No pertenceLista(void *conteudo, Lista l) {
+    for(No n = primeiroNoLista(l); n; n = getSucessorNo(n)) {
+        if(conteudo == getConteudo(n)) {
+            return n;
+        }
+    }
+    return NULL;
 }
