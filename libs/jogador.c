@@ -48,14 +48,14 @@ Lista Joga(Grafo g, Lista grupo){
         destroiLista(coresFilhos, destroiVertice);
 
         // // PARA DEBUG!! Imprime as últimas 10 jogadas em um arquivo
-        // char str[32];
-        // sprintf(str, "./jogada%d.out", counter );
-        // FILE* debug = fopen(str, "w+");
-        // if(debug) {
-        //     grafoParaDot(g, grupo, debug);
-        // }
-        // fclose(debug);
-        // ++counter;
+         char str[32];
+         sprintf(str, "./jogada%d.out", counter );
+         FILE* debug = fopen(str, "w+");
+         if(debug) {
+             grafoParaDot(g, grupo, debug);
+         }
+         fclose(debug);
+         ++counter;
     } while(tamanhoLista(grupo) < tamanhoLista(g->vertices));
 
     return jogadas;

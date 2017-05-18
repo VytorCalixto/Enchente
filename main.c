@@ -16,6 +16,10 @@ int main() {
         puts("Erro na leitura do tabuleiro");
         return -1;
     }
+	
+    //TODO imprimindo o tabuleiro
+//    imprimeTblr(t);
+
     Grafo g = criaGrafo();
     // Transforma o tabuleiro para um grafo
     tabuleiroParaGrafo(t, g);
