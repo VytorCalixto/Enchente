@@ -24,6 +24,101 @@ void criaArco(Vertice v, Vertice w) {
     insereUnicoLista(v, w->pais);
 }
 
+/* Algoritmo recursivo
+Para cada celula do tabuleiro, indo da esquerda pra direita, de cima pra baixo.  
+	Verifica se essa célula já foi visitada, se sim, retorna.
+	Se não, cria um vertice para ela e chama o algoritmo FLoodfill(celula, vertice) recursivo para esta celula
+
+
+Floodfill(celula, vertice)
+	atrela o vertice a este.
+	visita este
+	se nenhum dos vizinhos eh da mesma cor ou se os vizinhos da mesma cor ja tiverem vertices, entao 
+		retorna.
+	se algum dos vizinhos for da mesma cor, chama 
+		floodfill(vizinho de mesma cor, vertice)
+	retorna
+-----------------------------------------------------------
+*/
+
+void tabuleiroParaGrafo(Tblr t, Grafo g) {
+	//Para cada celula do tabuleiro
+	for(int i=0; i < t->x; ++i) {
+	        for(int j=0; j < t->y; ++j) {
+			Celula c = t->celulas[i * t->y +j];
+			//Verifica se essa célula já foi visitada
+			if(c->vert == NULL){
+				//Se não, cria um vertice para ela e chama o algoritmo FLoodfill(celula, vertice) recursivo para esta celula
+				// Crio um vértice para mim
+				Vertice v = criaVertice();
+				v->cor = c->cor;
+				v->peso = 0;
+				insereVertice(g, v);
+				//Chama o flood fill
+				int auxi = i;
+				int auxj = j;
+				printf("\nIN HERE \n");
+				floodFill(t, g, v, c, auxi, auxj);
+			}
+		}
+	}
+}
+
+void floodFill(Tblr t, Grafo g, Vertice v, Celula c, int i, int j){
+	c->vert = v;
+	v->peso = v->peso + 1;
+	Celula cima, baixo, esq, dir;
+	printf("in floodfill, a cor foi: %d, o i foi: %d e o j foi: %d \n", c->cor, i, j);
+	int auxi = i;
+	int auxj = j;
+
+	//Cima
+	if(i > 0) {
+		cima = t->celulas[(i-1) * t->y + j];
+		if((cima->cor == c->cor) && (cima->vert == NULL)) {
+			printf("cima\n");
+			floodFill(t, g, v, cima, (auxi-1), auxj);
+		}
+	}
+	// Esquerda
+	if(j > 0) {
+		esq = t->celulas[i * t->y + (j - 1)];
+		if((esq->cor == c->cor) && (esq->vert == NULL)) {
+			printf("esq\n");
+			floodFill(t, g, v, esq, auxi, (auxj-1));
+		}
+	}
+	// Baixo
+	if(i < t->x - 1) {
+		baixo = t->celulas[(i + 1) * t->y + j];
+		if((baixo->cor == c->cor) && (baixo->vert == NULL)) {
+			printf("baixo\n");
+			floodFill(t, g, v, baixo, (auxi+1), auxj);
+		}
+	}
+	// Direita
+	if(j < t->y - 1) {
+		dir = t->celulas[i * t->y + (j + 1)];
+		if((dir->cor == c->cor) && (dir->vert == NULL)) {
+			printf("dir \n");
+			floodFill(t, g, v, dir, auxi, (auxj+1));
+		}
+	}
+	return;
+}
+
+/* Algoritmo inicial do vytor. 
+
+Para cada celula do tabuleiro, indo da esquerda pra direita, de cima pra baixo.  
+	verifica se a cor desta celula é a mesma da célula de cima e se a célula de cima já tem vértice
+		se sim, esta célula será mapeada para o mesmo vértice.
+		o vértice recebe peso +1
+	verifica para o da esquerda
+	" baixo
+	" direita
+
+	se esta célula nao se agrupou com nenhuma, entao cria sua própria
+
 void tabuleiroParaGrafo(Tblr t, Grafo g) {
     for(int i=0; i < t->x; ++i) {
         for(int j=0; j < t->y; ++j) {
@@ -35,7 +130,7 @@ void tabuleiroParaGrafo(Tblr t, Grafo g) {
             if(i > 0) {
                 cima = t->celulas[(i-1) * t->y + j];
                 if(cima->vert && (cima->cor == c->cor)) {
-                    c->vert = cima->vert;
+                    c->vert = cima->vert; //o vertice ao qual este vai ser agrupado sera o mesmo vertice do seu vizinho de cima
                     ++(c->vert->peso);
                 }
             }
@@ -111,7 +206,7 @@ void tabuleiroParaGrafo(Tblr t, Grafo g) {
     }
     return;
 }
-
+*/
 void destroiGrafo(Grafo g) {
     destroiLista(g->vertices, destroiVertice);
     free(g);

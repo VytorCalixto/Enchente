@@ -17,6 +17,8 @@ void criaArco(Vertice v, Vertice w);
 
 void tabuleiroParaGrafo(Tblr t, Grafo g);
 
+void floodFill(Tblr t, Grafo g, Vertice v, Celula c, int i, int j);
+
 void destroiGrafo(Grafo g);
 
 void grafoParaDot(Grafo g, Lista grupo, FILE* fp);
