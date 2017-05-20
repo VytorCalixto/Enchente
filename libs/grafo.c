@@ -26,18 +26,18 @@ void criaArco(Vertice v, Vertice w) {
 
 /* Algoritmo recursivo
 Para cada celula do tabuleiro, indo da esquerda pra direita, de cima pra baixo.
-Verifica se essa célula já foi visitada, se sim, retorna.
-Se não, cria um vertice para ela e chama o algoritmo FLoodfill(celula, vertice) recursivo para esta celula
+    Verifica se essa célula já foi visitada, se sim, retorna.
+    Se não, cria um vertice para ela e chama o algoritmo FLoodfill(celula, vertice) recursivo para esta celula
 
 
 Floodfill(celula, vertice)
-atrela o vertice a este.
-visita este
-se nenhum dos vizinhos eh da mesma cor ou se os vizinhos da mesma cor ja tiverem vertices, entao
-retorna.
-se algum dos vizinhos for da mesma cor, chama
-floodfill(vizinho de mesma cor, vertice)
-retorna
+    atrela o vertice a este.
+    visita este
+    se nenhum dos vizinhos eh da mesma cor ou se os vizinhos da mesma cor ja tiverem vertices, entao
+        retorna.
+    se algum dos vizinhos for da mesma cor, chama
+        floodfill(vizinho de mesma cor, vertice)
+    retorna
 -----------------------------------------------------------
 */
 
