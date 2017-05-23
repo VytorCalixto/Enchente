@@ -17,7 +17,7 @@ Lista Joga(Grafo g, Lista grupo){
         //      - FILHOS: Cores alcancáveis a partir da raiz
         //      - NETOS: Cores alcançáveis a partir dos filhos que NÃO são alcançáveis a partir da raiz
         //          Só é necessário para calcular o bônus de cada filho
-        Lista coresFilhos = agrupaCores(filhos);
+        Lista coresFilhos = agrupaCores(filhos, g);
         // Seleciona o melhor filho baseado em peso(filho) + bônus(filho) // (filho com a maior soma de filho e peso)
         // O bônus é calculado da seguinte forma:
         //      - Soma o valor de cada neto (que não é alcançável pela raiz)
@@ -75,7 +75,7 @@ Lista filhosGrupo(Lista grupoPai) {
     return filhos;
 }
 
-Lista agrupaCores(Lista filhos) {
+Lista agrupaCores(Lista filhos, Grafo g) {
     Lista agrupa = constroiLista();
     for(No n = primeiroNoLista(filhos); n; n = getSucessorNo(n)) {
         Vertice v = (Vertice) getConteudo(n);
@@ -97,6 +97,23 @@ Lista agrupaCores(Lista filhos) {
             w->peso = v->peso;
             w->bonus = calculaBonus(v, filhos);
             insereLista(w, agrupa);
+        }
+    }
+
+    // Depois de agrupar, verifica se algum grupo vai chegar ao fim nesta jogada
+    for(No n = primeiroNoLista(agrupa); n; n = getSucessorNo(n)) {
+        Vertice v = (Vertice) getConteudo(n);
+        int somaCor = 0;
+        for(No m = primeiroNoLista(g->vertices); m; m = getSucessorNo(m)) {
+            Vertice w = (Vertice) getConteudo(m);
+            if(!w->grupo && w->cor == v->cor) {
+                somaCor += w->peso;
+            }
+        }
+        // Se a soma de todos os vértices que não pertencem ao grupo for igual
+        //      ao peso do vértice agrupado, esta é a última jogada com aquela cor
+        if(v->peso == somaCor) {
+            v->bonus += 100; // Mais bonus para que essa cor seja a escolhida
         }
     }
 
