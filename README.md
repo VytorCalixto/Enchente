@@ -39,9 +39,9 @@ This was a correct answer and it was the minimum answer. It is easy to see it by
 Our code gave the sequence:
 ```
 3
-2 1 2
+2 1
 ```
-This was the wrong answer. The correct answer would be only "2 1". The game can be won in 2 steps.
+This was a correct answer and it was the minimum answer. It is easy to see it by checking.
 
 **Test 3- 5 5 4 2**
 
@@ -56,12 +56,10 @@ It is a correct sequence, and it is a minimum answer.
 
 Our code gave the sequence:
 ```
-60
-1 3 4 3 2 1 2 3 4 2 3 4 2 1 4 3 2 4 3 2 1 4 2 3 1 2 3 4 1 2 4 3 2 1 4 2 3 4 1 2 3 4 1 3 2 4 1 3 4 1 2 3 4..3 1 2 4! 3 1 2
+57
+1 3 1 2 4 1 2 3 4 2 3 1 3 4 1 2 1 3 4 2 3 1 2 4 3 1 2 4 2 1 3 4 2 1 4 3 2 1 3 4 1 2 4 3 1 2 3 1 4 3 4 2 3 1 2 4 3
 ```
-Where it was marked with "..", if after the 4 the algorithm had given the subsequence "1 2 4" the game would be over.
-So this sequence is wrong and it is not minimum. At that point, our algorithm is not recognizing that the number "3" in the table is non-existant, it should not have played "3" after the ".."
-After the mark "!" the game would be over, our algorithm did not recognize the game was over and played another "3 1 2"
+It is a correct sequence.
 
 **Test 7- 5 5 4 3**
 
