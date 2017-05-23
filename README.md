@@ -65,15 +65,10 @@ It is a correct sequence.
 
 Our code gave the sequence:
 ```
-8
-1 2 3 4 2 1 3 4
-```
-This solves the board, but there is a smaller sequence:
-```
 6
 1 2 1 3 4 2
 ```
-Proposed solution: give a **HUGE** bonus to a group that is the last group of that color
+It is a correc sequence.
 
 **--------------- NOT ANALYSED yet --------------**
 
