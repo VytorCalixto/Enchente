@@ -35,9 +35,9 @@ Lista Joga(Grafo g, Lista grupo){
         for(No n = primeiroNoLista(coresFilhos); n; n = getSucessorNo(n)) {
             Vertice v = (Vertice) getConteudo(n);
             // TODO: tratar empates!
-            if((/*v->peso + */v->bonus) > (/*maior->peso + */maior->bonus)) {
+            if((v->bonus) > (maior->bonus)) {
                 maior = v;
-            } else if((/*v->peso + */v->bonus) == (/*maior->peso + */maior->bonus)) {
+            } else if((v->bonus) == (maior->bonus)) {
                 if(v->peso > maior->peso) {
                     maior = v;
                 }
@@ -66,7 +66,7 @@ Lista Joga(Grafo g, Lista grupo){
         //      grafoParaDot(g, grupo, debug);
         //  }
         //  fclose(debug);
-        //  ++counter;
+         ++counter;
     }
 
     return jogadas;
