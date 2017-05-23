@@ -9,7 +9,7 @@ Lista Joga(Grafo g, Lista grupo){
     Lista jogadas = constroiLista();
     //TODO: A Logica toda do jogo vai ficar aqui
     int counter = 1;
-    do {
+    while(tamanhoLista(grupo) < tamanhoLista(g->vertices)) {
         // Pega os filhos do grupo
         Lista filhos = filhosGrupo(grupo);
         // Monta a árvore de busca:
@@ -18,6 +18,12 @@ Lista Joga(Grafo g, Lista grupo){
         //      - NETOS: Cores alcançáveis a partir dos filhos que NÃO são alcançáveis a partir da raiz
         //          Só é necessário para calcular o bônus de cada filho
         Lista coresFilhos = agrupaCores(filhos, g);
+        // printf("\tJOGADA %d\n", counter);
+        // printf("\tTamanho coresFilhos %d\n", tamanhoLista(coresFilhos));
+        // for(No n = primeiroNoLista(coresFilhos); n; n = getSucessorNo(n)) {
+        //     Vertice v = (Vertice) getConteudo(n);
+        //     printf("\t\tVértice - cor: %d, peso: %d, bonus: %d\n", v->cor, v->peso, v->bonus);
+        // }
         // Seleciona o melhor filho baseado em peso(filho) + bônus(filho) // (filho com a maior soma de filho e peso)
         // O bônus é calculado da seguinte forma:
         //      - Soma o valor de cada neto (que não é alcançável pela raiz)
@@ -29,10 +35,15 @@ Lista Joga(Grafo g, Lista grupo){
         for(No n = primeiroNoLista(coresFilhos); n; n = getSucessorNo(n)) {
             Vertice v = (Vertice) getConteudo(n);
             // TODO: tratar empates!
-            if((v->peso + v->bonus) > (maior->peso + maior->bonus)) {
+            if((/*v->peso + */v->bonus) > (/*maior->peso + */maior->bonus)) {
                 maior = v;
+            } else if((/*v->peso + */v->bonus) == (/*maior->peso + */maior->bonus)) {
+                if(v->peso > maior->peso) {
+                    maior = v;
+                }
             }
         }
+        // printf("\t\tCOR ESCOLHIDA: %d\n", maior->cor);
         insereLista(maior->cor, jogadas);
         // "Pinta o tablueiro"
         for(No n = primeiroNoLista(filhos); n; n = getSucessorNo(n)) {
@@ -47,7 +58,7 @@ Lista Joga(Grafo g, Lista grupo){
         destroiLista(filhos, NULL);
         destroiLista(coresFilhos, destroiVertice);
 
-        // // PARA DEBUG!! Imprime as últimas 10 jogadas em um arquivo
+        // PARA DEBUG!! Imprime as últimas 10 jogadas em um arquivo
         //  char str[32];
         //  sprintf(str, "./jogada%d.out", counter );
         //  FILE* debug = fopen(str, "w+");
@@ -56,7 +67,7 @@ Lista Joga(Grafo g, Lista grupo){
         //  }
         //  fclose(debug);
         //  ++counter;
-    } while(tamanhoLista(grupo) < tamanhoLista(g->vertices));
+    }
 
     return jogadas;
 }
@@ -100,7 +111,7 @@ Lista agrupaCores(Lista filhos, Grafo g) {
         }
     }
 
-    // Depois de agrupar, verifica se algum grupo vai chegar ao fim nesta jogada
+    // Depois de agrupar, verifica se alguma cor vai chegar ao fim nesta jogada
     for(No n = primeiroNoLista(agrupa); n; n = getSucessorNo(n)) {
         Vertice v = (Vertice) getConteudo(n);
         int somaCor = 0;
@@ -124,7 +135,7 @@ int calculaBonus(Vertice v, Lista filhos) {
     int bonus = 0;
     for(No n = primeiroNoLista(v->filhos); n; n = getSucessorNo(n)) {
         Vertice filho = getConteudo(n);
-        // Se o filho não está na lsita filhos e não está no grupo de vértices já consumidos
+        // Se o filho não está na lista filhos e não está no grupo de vértices já consumidos
         if(!filho->grupo && !pertenceLista(filho, filhos)) {
             bonus += filho->peso;
         }
