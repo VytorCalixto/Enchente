@@ -1,4 +1,4 @@
-CFLAGS = -std=c99 -O2 -W -Wall -g
+CFLAGS = -std=c99 -O2 -W -Wall -g 
 
 .PHONY: all clean
 
@@ -11,7 +11,7 @@ test: main
 	./runTests.sh
 
 main: main.c libs/jogador.o libs/tabuleiro.o libs/grafo.o libs/vertice.o libs/filha.o libs/lista.o libs/no.o
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@ $^ -lm
 
 clean:
 	$(RM) *.o
