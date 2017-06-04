@@ -29,8 +29,12 @@ Lista Joga(Grafo g, Lista grupo){
         for(No n = primeiroNoLista(coresFilhos); n; n = getSucessorNo(n)) {
             Vertice v = (Vertice) getConteudo(n);
             // TODO: tratar empates!
-            if((v->peso + v->bonus) > (maior->peso + maior->bonus)) {
+            if((v->bonus) > (maior->bonus)) {
                 maior = v;
+            } else if(v->bonus == maior->bonus) {
+                if(v->peso > maior->peso) {
+                    maior = v;
+                }
             }
         }
         insereLista(maior->cor, jogadas);
@@ -46,16 +50,17 @@ Lista Joga(Grafo g, Lista grupo){
         // Limpa as coisas
         destroiLista(filhos, NULL);
         destroiLista(coresFilhos, destroiVertice);
-
-        // // PARA DEBUG!! Imprime as últimas 10 jogadas em um arquivo
-        //  char str[32];
-        //  sprintf(str, "./jogada%d.out", counter );
-        //  FILE* debug = fopen(str, "w+");
-        //  if(debug) {
-        //      grafoParaDot(g, grupo, debug);
-        //  }
-        //  fclose(debug);
-        //  ++counter;
+        
+        calculaAltura(g, grupo);
+        // PARA DEBUG!! Imprime as últimas 10 jogadas em um arquivo
+         char str[32];
+         sprintf(str, "./jogada%d.out", counter );
+         FILE* debug = fopen(str, "w+");
+         if(debug) {
+             grafoParaDot(g, grupo, debug);
+         }
+         fclose(debug);
+         ++counter;
     } while(tamanhoLista(grupo) < tamanhoLista(g->vertices));
 
     return jogadas;

@@ -127,6 +127,36 @@ void floodFill(Tblr t, Vertice v, int i, int j){
     return;
 }
 
+#include "filha.h"
+void calculaAltura(Grafo g, Lista raiz) {
+    for(No n = primeiroNoLista(g->vertices); n; n = getSucessorNo(n)) {
+        Vertice v = (Vertice) getConteudo(n);
+        v->altura = -1;
+    }
+
+    Filha fila = constroiFilha();
+    for(No n = primeiroNoLista(raiz); n; n = getSucessorNo(n)) {
+        Vertice v = (Vertice) getConteudo(n);
+        v->altura = 0;
+        insereFilha(v, fila);
+    }
+
+    while(tamanhoFilha(fila) > 0) {
+        No n = primeiroNoFilha(fila);
+        if(!n) {
+            continue;
+        };
+        Vertice v = (Vertice) getConteudo(n);
+        for(No m = primeiroNoLista(v->filhos); m; m = getSucessorNo(m)) {
+            Vertice filho = (Vertice) getConteudo(m);
+            if(filho->altura == -1) {
+                filho->altura = v->altura+1;
+                insereFilha(filho, fila);
+            }
+        }
+    }
+}
+
 void destroiGrafo(Grafo g) {
     destroiLista(g->vertices, destroiVertice);
     free(g);
@@ -144,10 +174,10 @@ void grafoParaDot(Grafo g, Lista grupo, FILE* fp) {
     // Imprime o grafo
     for(No n = primeiroNoLista(g->vertices); n; n = getSucessorNo(n)) {
         Vertice pai = (Vertice) getConteudo(n);
-        fprintf(fp, "\t\"%p\" [label=\"cor=%d,peso=%d\"];\n", pai, pai->cor, pai->peso);
+        fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\naltura=%d\"];\n", pai, pai->cor, pai->peso, pai->altura);
         for(No m = primeiroNoLista(pai->filhos); m; m = getSucessorNo(m)) {
             Vertice filho = (Vertice) getConteudo(m);
-            fprintf(fp, "\t\"%p\" [label=\"cor=%d,peso=%d\"];\n", filho, filho->cor, filho->peso);
+            fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\naltura=%d\"];\n", filho, filho->cor, filho->peso, filho->altura);
             fprintf(fp, "\t\"%p\" -- \"%p\";\n", pai, filho);
         }
     }

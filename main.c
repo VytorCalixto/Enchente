@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
         puts("Erro na leitura do tabuleiro");
         return -1;
     }
-    
+
     // Se colocar UMA e APENAS UMA coisa depois do main
     if(argc == 2) {
         // Calcula e imprime o número mínimo e máximo de jogadas
