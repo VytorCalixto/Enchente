@@ -15,5 +15,5 @@ Lista filhosGrupo(Lista grupoPai);
 // Retorna uma lista de vértices com as cores e pesos agrupadas a partir de l
 Lista agrupaCores(Lista filhos, Grafo g, int altura, int naoConsumidos);
 
-int calculaBonus(Vertice v, Lista filhos, int profundidade);
+int calculaBonus(Vertice v, Lista irmaos, int profundidade);
 #endif
