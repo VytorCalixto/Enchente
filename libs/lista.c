@@ -20,7 +20,13 @@ unsigned int tamanhoLista(Lista l) { return l->tamanho; }
 // devolve o primeiro nó da Lista l,
 //      ou NULL, se l é vazia
 
-No primeiroNoLista(Lista l) { return l->primeiro; }
+No primeiroNoLista(Lista l) {
+    if(!l) return NULL;
+    if(l->tamanho == 0) {
+        return NULL;
+    }
+    return l->primeiro;
+}
 
 //---------------------------------------------------------------------------
 // cria uma Lista vazia e a devolve

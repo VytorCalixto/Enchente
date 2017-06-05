@@ -11,6 +11,7 @@ Vertice criaVertice() {
     v->bonus = 0;
     v->altura = -1;
     v->grupo = false;
+    v->visitado = false;
     v->pais = constroiLista();
     v->filhos = constroiLista();
     return v;

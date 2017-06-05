@@ -10,8 +10,19 @@ Lista Joga(Grafo g, Lista grupo){
     Lista jogadas = constroiLista();
     //TODO: A Logica toda do jogo vai ficar aqui
     int counter = 1;
+    double max = 2*(g->x) + (sqrt(2*g->cores))*(g->x) + g->cores;
+    double min = (sqrt(g->cores - 1)*g->x/2) - (g->cores/2);
     while(tamanhoLista(grupo) < tamanhoLista(g->vertices)) {
+        // Calcula a altura
         int altura = calculaAltura(g, grupo);
+
+        int naoConsumidos = tamanhoLista(g->vertices) - tamanhoLista(grupo);
+        int profundidade = 32;
+        if(altura > 10) {
+            profundidade = sqrt(max) * (sqrt(altura) / sqrt(min)) * (altura/sqrt(naoConsumidos));
+            if (profundidade <= 0) profundidade = 1;
+        }
+
         // Pega os filhos do grupo
         Lista filhos = filhosGrupo(grupo);
         // Monta a árvore de busca:
@@ -20,7 +31,7 @@ Lista Joga(Grafo g, Lista grupo){
         //      - NETOS: Cores alcançáveis a partir dos filhos que NÃO são alcançáveis a partir da raiz
         //          Só é necessário para calcular o bônus de cada filho
         // printf("\tJOGADA %d\n", counter);
-        Lista coresFilhos = agrupaCores(filhos, g, altura, tamanhoLista(g->vertices) - tamanhoLista(grupo));
+        Lista coresFilhos = agrupaCores(filhos, g, profundidade);
         // printf("\tAltura da árvore: %d\n", altura);
         // printf("\tNúmero de grupos: %d\n", tamanhoLista(g->vertices));
         // printf("\tNúmero de grupos não consumidos: %d\n", tamanhoLista(g->vertices) - tamanhoLista(grupo));
@@ -45,6 +56,18 @@ Lista Joga(Grafo g, Lista grupo){
             } else if((v->bonus) == (maior->bonus)) {
                 if(v->peso > maior->peso) {
                     maior = v;
+                } else if(v->peso == maior->peso) {
+                    int maiorFilhoM = 0;
+                    int maiorFilhoV = 0;
+                    for(No m = primeiroNoLista(maior->filhos); m; m = getSucessorNo(m)) {
+                        Vertice w = (Vertice) getConteudo(m);
+                        if(w->altura > maiorFilhoM) maiorFilhoM = w->altura;
+                    }
+                    for(No m = primeiroNoLista(v->filhos); m; m = getSucessorNo(m)) {
+                        Vertice w = (Vertice) getConteudo(m);
+                        if(w->altura > maiorFilhoV) maiorFilhoV = w->altura;
+                    }
+                    if(maiorFilhoV > maiorFilhoM) maior = v;
                 }
             }
         }
@@ -65,13 +88,13 @@ Lista Joga(Grafo g, Lista grupo){
 
         calculaAltura(g, grupo);
         // PARA DEBUG!! Imprime as últimas 10 jogadas em um arquivo
-        // char str[32];
-        // sprintf(str, "./jogada%d.out", counter );
-        // FILE* debug = fopen(str, "w+");
-        // if(debug) {
-        //     grafoParaDot(g, grupo, debug);
-        // }
-        // fclose(debug);
+        char str[32];
+        sprintf(str, "./jogada%d.out", counter );
+        FILE* debug = fopen(str, "w+");
+        if(debug) {
+            grafoParaDot(g, grupo, debug);
+        }
+        fclose(debug);
         ++counter;
     }
 
@@ -92,55 +115,61 @@ Lista filhosGrupo(Lista grupoPai) {
     return filhos;
 }
 
-// TODO: primeiro agrupa, DEPOIS calcula os bônus!!!
-// Para calcular o bônus, agrupa os filhos de um grupo e aí calcula o bônus
-// Ou seja, 2 ou mais vértices da MESMA COR que tenham o mesmo filho (repetição)
-//      só contarão UMA VEZ o bônus+peso daquele filho
-Lista agrupaCores(Lista filhos, Grafo g, int altura, int naoConsumidos) {
+Lista agrupaCores(Lista vertices, Grafo g, int profundidade) {
+    if(profundidade < 0 ) return NULL;
     Lista agrupa = constroiLista();
-    double max = 2*(g->x) + (sqrt(2*g->cores))*(g->x) + g->cores;
-    double min = (sqrt(g->cores - 1)*g->x/2) - (g->cores/2);
-    int profundidade = sqrt(max) * (sqrt(altura) / sqrt(min)) * (altura/sqrt(naoConsumidos));
-    // printf("\t\tProfundidade: %d\n", profundidade);
-    // printf("\t\tRazão: %f\n", (altura/sqrt(naoConsumidos)));
-    for(No n = primeiroNoLista(filhos); n; n = getSucessorNo(n)) {
+    for(No n = primeiroNoLista(vertices); n; n = getSucessorNo(n)) {
         Vertice v = (Vertice) getConteudo(n);
-        // Verifica se a cor já está na lista
-        bool estaNaLista = false;
-        for(No m = primeiroNoLista(agrupa); m; m = getSucessorNo(m)) {
+        // Verifica se a cor já está agrupada
+        bool estaAgrupado = false;
+        for(No m = primeiroNoLista(agrupa); m && !estaAgrupado; m = getSucessorNo(m)) {
             Vertice w = (Vertice) getConteudo(m);
             // Se está, soma o peso do vértice
             if(w->cor == v->cor) {
                 w->peso += v->peso;
-                w->bonus += calculaBonus(v, filhos, profundidade);
-                estaNaLista = true;
+                insereUnicoLista(v, w->pais);
+                for(No o = primeiroNoLista(v->filhos); o; o = getSucessorNo(o)) {
+                    Vertice x = (Vertice) getConteudo(o);
+                    if(x->altura > v->altura) insereUnicoLista(x, w->filhos);
+                }
+                estaAgrupado = true;
             }
         }
-        // Se não está, cria um vértice para a cor
-        if(!estaNaLista) {
+
+        // Se não está agrupado...
+        if(!estaAgrupado) {
             Vertice w = criaVertice();
             w->cor = v->cor;
             w->peso = v->peso;
-            w->bonus = calculaBonus(v, filhos, profundidade);
+            w->altura = v->altura;
+            insereUnicoLista(v, w->pais);
+            for(No m = primeiroNoLista(v->filhos); m; m = getSucessorNo(m)) {
+                Vertice x = (Vertice) getConteudo(m);
+                if(x->altura > v->altura) insereUnicoLista(x, w->filhos);
+            }
             insereLista(w, agrupa);
         }
     }
 
-    // Depois de agrupar, verifica se alguma cor vai chegar ao fim nesta jogada
+    // Depos do laço anterior, temos uma lista de vértices agrupados
+    //      Então, agrupamos os filhos e calculamos os bônus
     for(No n = primeiroNoLista(agrupa); n; n = getSucessorNo(n)) {
         Vertice v = (Vertice) getConteudo(n);
-        int somaCor = 0;
-        for(No m = primeiroNoLista(g->vertices); m; m = getSucessorNo(m)) {
+        Lista filhosAgrupa = agrupaCores(v->filhos, g, profundidade-1);
+        for(No m = primeiroNoLista(filhosAgrupa); m; m = getSucessorNo(m)) {
             Vertice w = (Vertice) getConteudo(m);
-            if(!w->grupo && w->cor == v->cor) {
-                somaCor += w->peso;
+            // TODO: verificar se W não é sobrinho de V
+            //      para não dar o bônus duas vezes
+            if(!w->grupo && (w->altura > v->altura) && !w->visitado){
+                v->bonus += w->peso + w->bonus;
+                w->visitado = true;
             }
         }
-        // Se a soma de todos os vértices que não pertencem ao grupo for igual
-        //      ao peso do vértice agrupado, esta é a última jogada com aquela cor
-        if(v->peso == somaCor) {
-            v->bonus += 100; // Mais bonus para que essa cor seja a escolhida
+        for(No m = primeiroNoLista(v->pais); m; m = getSucessorNo(m)) {
+            Vertice w = (Vertice) getConteudo(m);
+            w->bonus = v->bonus;
         }
+        destroiLista(filhosAgrupa, NULL);
     }
 
     return agrupa;
