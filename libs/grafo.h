@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 struct Grafo {
+    int x, y, cores;
     Lista vertices;
 };
 
@@ -19,7 +20,7 @@ void tabuleiroParaGrafo(Tblr t, Grafo g);
 
 void floodFill(Tblr t, Vertice v, int i, int j);
 
-void calculaAltura(Grafo g, Lista raiz);
+int calculaAltura(Grafo g, Lista raiz);
 
 void destroiGrafo(Grafo g);
 

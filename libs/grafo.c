@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "grafo.h"
 #include "lista.h"
+#include "filha.h"
 #include "vertice.h"
 #include "tabuleiro.h"
 #include <stdio.h>
@@ -42,6 +43,9 @@ Floodfill(celula, vertice)
 */
 
 void tabuleiroParaGrafo(Tblr t, Grafo g) {
+    g->x = t->x;
+    g->y = t->y;
+    g->cores = t->cores;
     //Para cada celula do tabuleiro
     for(int i=0; i < t->x; ++i) {
         for(int j=0; j < t->y; ++j) {
@@ -127,8 +131,8 @@ void floodFill(Tblr t, Vertice v, int i, int j){
     return;
 }
 
-#include "filha.h"
-void calculaAltura(Grafo g, Lista raiz) {
+int calculaAltura(Grafo g, Lista raiz) {
+    int alturaMax = 0;
     for(No n = primeiroNoLista(g->vertices); n; n = getSucessorNo(n)) {
         Vertice v = (Vertice) getConteudo(n);
         v->altura = -1;
@@ -151,10 +155,16 @@ void calculaAltura(Grafo g, Lista raiz) {
             Vertice filho = (Vertice) getConteudo(m);
             if(filho->altura == -1) {
                 filho->altura = v->altura+1;
+                if(filho->altura > alturaMax) {
+                    alturaMax = filho->altura;
+                }
                 insereFilha(filho, fila);
             }
         }
+        free(n);
     }
+    destroiFilha(fila, NULL);
+    return alturaMax;
 }
 
 void destroiGrafo(Grafo g) {
@@ -174,10 +184,10 @@ void grafoParaDot(Grafo g, Lista grupo, FILE* fp) {
     // Imprime o grafo
     for(No n = primeiroNoLista(g->vertices); n; n = getSucessorNo(n)) {
         Vertice pai = (Vertice) getConteudo(n);
-        fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\naltura=%d\"];\n", pai, pai->cor, pai->peso, pai->altura);
+        fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\nbonus=%d\naltura=%d\"];\n", pai, pai->cor, pai->peso, pai->bonus, pai->altura);
         for(No m = primeiroNoLista(pai->filhos); m; m = getSucessorNo(m)) {
             Vertice filho = (Vertice) getConteudo(m);
-            fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\naltura=%d\"];\n", filho, filho->cor, filho->peso, filho->altura);
+            fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\nbonus=%d\naltura=%d\"];\n", filho, filho->cor, filho->peso, filho->bonus, filho->altura);
             fprintf(fp, "\t\"%p\" -- \"%p\";\n", pai, filho);
         }
     }

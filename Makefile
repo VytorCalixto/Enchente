@@ -1,4 +1,4 @@
-CFLAGS = -std=c99 -O2 -W -Wall -g 
+CFLAGS = -std=c99 -O2 -W -Wall -g
 
 .PHONY: all clean
 
