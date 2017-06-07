@@ -17,11 +17,7 @@ Lista Joga(Grafo g, Lista grupo){
         int altura = calculaAltura(g, grupo);
 
         int naoConsumidos = tamanhoLista(g->vertices) - tamanhoLista(grupo);
-        int profundidade = 32;
-        if(altura > 10) {
-            profundidade = sqrt(max) * (sqrt(altura) / sqrt(min)) * (altura/sqrt(naoConsumidos));
-            if (profundidade <= 0) profundidade = 1;
-        }
+        int profundidade = sqrt(max) * (sqrt(altura) / sqrt(min)) * (altura/sqrt(naoConsumidos));
 
         // Pega os filhos do grupo
         Lista filhos = filhosGrupo(grupo);
@@ -31,7 +27,7 @@ Lista Joga(Grafo g, Lista grupo){
         //      - NETOS: Cores alcançáveis a partir dos filhos que NÃO são alcançáveis a partir da raiz
         //          Só é necessário para calcular o bônus de cada filho
         // printf("\tJOGADA %d\n", counter);
-        Lista coresFilhos = agrupaCores(filhos, g, profundidade);
+        Lista coresFilhos = agrupaCores(filhos);
         // printf("\tAltura da árvore: %d\n", altura);
         // printf("\tNúmero de grupos: %d\n", tamanhoLista(g->vertices));
         // printf("\tNúmero de grupos não consumidos: %d\n", tamanhoLista(g->vertices) - tamanhoLista(grupo));
@@ -56,18 +52,6 @@ Lista Joga(Grafo g, Lista grupo){
             } else if((v->bonus) == (maior->bonus)) {
                 if(v->peso > maior->peso) {
                     maior = v;
-                } else if(v->peso == maior->peso) {
-                    int maiorFilhoM = 0;
-                    int maiorFilhoV = 0;
-                    for(No m = primeiroNoLista(maior->filhos); m; m = getSucessorNo(m)) {
-                        Vertice w = (Vertice) getConteudo(m);
-                        if(w->altura > maiorFilhoM) maiorFilhoM = w->altura;
-                    }
-                    for(No m = primeiroNoLista(v->filhos); m; m = getSucessorNo(m)) {
-                        Vertice w = (Vertice) getConteudo(m);
-                        if(w->altura > maiorFilhoV) maiorFilhoV = w->altura;
-                    }
-                    if(maiorFilhoV > maiorFilhoM) maior = v;
                 }
             }
         }
@@ -115,8 +99,7 @@ Lista filhosGrupo(Lista grupoPai) {
     return filhos;
 }
 
-Lista agrupaCores(Lista vertices, Grafo g, int profundidade) {
-    if(profundidade < 0 ) return NULL;
+Lista agrupaCores(Lista vertices) {
     Lista agrupa = constroiLista();
     for(No n = primeiroNoLista(vertices); n; n = getSucessorNo(n)) {
         Vertice v = (Vertice) getConteudo(n);
@@ -151,40 +134,22 @@ Lista agrupaCores(Lista vertices, Grafo g, int profundidade) {
         }
     }
 
-    // Depos do laço anterior, temos uma lista de vértices agrupados
-    //      Então, agrupamos os filhos e calculamos os bônus
-    for(No n = primeiroNoLista(agrupa); n; n = getSucessorNo(n)) {
-        Vertice v = (Vertice) getConteudo(n);
-        Lista filhosAgrupa = agrupaCores(v->filhos, g, profundidade-1);
-        for(No m = primeiroNoLista(filhosAgrupa); m; m = getSucessorNo(m)) {
-            Vertice w = (Vertice) getConteudo(m);
-            // TODO: verificar se W não é sobrinho de V
-            //      para não dar o bônus duas vezes
-            if(!w->grupo && (w->altura > v->altura) && !w->visitado){
-                v->bonus += w->peso + w->bonus;
-                w->visitado = true;
-            }
-        }
-        for(No m = primeiroNoLista(v->pais); m; m = getSucessorNo(m)) {
-            Vertice w = (Vertice) getConteudo(m);
-            w->bonus = v->bonus;
-        }
-        destroiLista(filhosAgrupa, NULL);
-    }
-
     return agrupa;
 }
 
-int calculaBonus(Vertice v, Lista irmaos, int profundidade) {
-    int bonus = 0;
-    for(No n = primeiroNoLista(v->filhos); n; n = getSucessorNo(n)) {
-        Vertice filho = (Vertice) getConteudo(n);
-        // Se o filho não está na lista irmaos e não está no grupo de vértices já consumidos
-        if(!filho->grupo && !pertenceLista(filho, irmaos)) {
-            bonus += filho->peso + calculaBonusRec(filho, v, profundidade);
+// TODO: repensar calculo do bônus
+void calculaBonus(Lista grupo, int profundidade) {
+    for(No n = primeiroNoLista(grupo); n; n = getSucessorNo(n)) {
+        Vertice v = (Vertice) getConteudo(n);
+        for(No m = primeiroNoLista(v->filhos); m; m = getSucessorNo(m)) {
+            Vertice filho = (Vertice) getConteudo(m);
+            // Se o filho não está na lista irmaos e não está no grupo de vértices já consumidos
+            if(!filho->grupo && !pertenceLista(filho, grupo) && (filho->altura > v->altura)) {
+                v->bonus += filho->peso + calculaBonusRec(filho, v, profundidade);
+            }
         }
     }
-    return v->bonus = bonus;
+    return;
 }
 
 int calculaBonusRec(Vertice v, Vertice pai, int profundidade) {

@@ -13,7 +13,7 @@ Lista Joga(Grafo g, Lista grupo);
 Lista filhosGrupo(Lista grupoPai);
 
 // Retorna uma lista de vértices com as cores e pesos agrupadas a partir de l
-Lista agrupaCores(Lista vertices, Grafo g, int profundidade);
+Lista agrupaCores(Lista vertices);
 
-int calculaBonus(Vertice v, Lista irmaos, int profundidade);
+void calculaBonus(Lista grupo, int profundidade);
 #endif
