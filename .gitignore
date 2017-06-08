@@ -9,3 +9,4 @@ tests/*.png
 massif.out*
 *.out
 !tests/tabuleiros.out
+!tests/tabuleiros2.out
