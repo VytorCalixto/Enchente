@@ -151,7 +151,23 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
             }
         }
         Lista vFilhos = agrupaCores(v->filhos);
-        v->bonus += tamanhoLista(v->filhos) - tamanhoLista(vFilhos);
+        v->bonus += (tamanhoLista(v->filhos) - tamanhoLista(vFilhos))*2;
+        // TODO: Se os filhos do grupo vão acabar na próxima jogada, dar bonus
+        // tabuleiro 3 3 4 1930
+        for(No m = primeiroNoLista(vFilhos); m; m = getSucessorNo(m)) {
+            Vertice w = (Vertice) getConteudo(m);
+            int somaCor = 0;
+            for(No o = primeiroNoLista(g->vertices); o; o = getSucessorNo(o)) {
+                Vertice x = (Vertice) getConteudo(o);
+                if(x->grupo) continue;
+                if(x->cor == w->cor) {
+                    somaCor += x->peso;
+                }
+            }
+            if(w->peso == somaCor) {
+                w->bonus += 150;
+            }
+        }
         destroiLista(vFilhos, NULL);
 
         int menorDistancia = v->altura;
@@ -184,8 +200,9 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
         //      for igual ao peso do vértice agrupado, esta é a
         //      última jogada com aquela cor
         if(v->peso == somaCor) {
-            v->bonus += 100; // Mais bonus para que essa cor seja a escolhida
+            v->bonus += 250; // Mais bonus para que essa cor seja a escolhida
         }
+
     }
 
     return;
@@ -198,21 +215,6 @@ int calculaBonusRec(Vertice v, Vertice pai, Grafo g, int profundidade) {
         Vertice filho = (Vertice) getConteudo(n);
         if((filho->altura > v->altura)) {
             int preBonus = filho->peso + calculaBonusRec(filho, v, g, profundidade-1);
-            // for(No m = primeiroNoLista(g->vertices); m && (profundidade < 10); m = getSucessorNo(m)) {
-            //     Vertice w = (Vertice) getConteudo(m);
-            //     if(w == pai) continue;
-            //     if(!w->grupo) {
-            //         // Se existe alguém um nível acima da mesma cor...
-            //         if((w->altura == (filho->altura - 1)) && (w->cor == filho->cor)) {
-            //             // preBonus += 25;
-            //         }
-            //         // // Se existe alguém dois níves acima com a mesma cor
-            //         // else if((w->altura == (filho->altura - 2)) && (w->cor == filho->cor)) {
-            //         //     preBonus += 15;
-            //         // }
-            //     }
-            // }
-
             bonus += preBonus;
         }
     }
