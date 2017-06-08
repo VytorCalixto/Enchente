@@ -48,8 +48,8 @@ do
             ./floodit_h1 < "/tmp/${semente}.in" > /tmp/h1.out
             ./floodit_h2 < "/tmp/${semente}.in" > /tmp/h2.out
             RESP=$(cat /tmp/resp.out | head -n1)
-            H1=$(cat /tmp/h1.out | head -n1)
-            H2=$(cat /tmp/h2.out | head -n1)
+            H1=$(cat /tmp/h1.out | tail -n2 | head -n1)
+            H2=$(cat /tmp/h2.out | tail -n2 | head -n1)
             if [ $RESP -gt $H1 ]; then
                 echo -ne "${RED}Heurística h1 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H1} e nós em ${RESP}${NC}\n"
                 echo "${i} ${i} ${cor} ${semente} (h1: ${H1})" >> tabuleiros.txt

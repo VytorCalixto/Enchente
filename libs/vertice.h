@@ -6,7 +6,7 @@
 struct Vertice {
     int cor;
     int peso;
-    int bonus;
+    unsigned long int bonus;
     int altura;
     bool grupo;
     bool visitado;
