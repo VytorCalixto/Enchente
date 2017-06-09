@@ -11,13 +11,13 @@ Lista Joga(Grafo g, Lista grupo){
     int counter = 1;
     double max = 2*(g->x) + (sqrt(2*g->cores))*(g->x) + g->cores;
     double min = (sqrt(g->cores - 1)*g->x/2) - (g->cores/2);
+    if (min < 1) min = 1;
     while(tamanhoLista(grupo) < tamanhoLista(g->vertices)) {
         // Calcula a altura
         int altura = calculaAltura(g, grupo);
 
         int naoConsumidos = tamanhoLista(g->vertices) - tamanhoLista(grupo);
         int profundidade = (sqrt(max) * (sqrt(altura) / sqrt(min)) * (altura/sqrt(naoConsumidos)));
-        // if(min <= 5) profundidade=altura;
 
         Lista filhos = filhosGrupo(grupo);
 
@@ -160,12 +160,13 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
             for(No o = primeiroNoLista(g->vertices); o; o = getSucessorNo(o)) {
                 Vertice x = (Vertice) getConteudo(o);
                 if(x->grupo) continue;
+                if(x->altura < w->altura) continue;
                 if(x->cor == w->cor) {
                     somaCor += x->peso;
                 }
             }
             if(w->peso == somaCor) {
-                w->bonus += 150;
+                v->bonus += 150;
             }
         }
         destroiLista(vFilhos, NULL);
@@ -200,7 +201,7 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
         //      for igual ao peso do vértice agrupado, esta é a
         //      última jogada com aquela cor
         if(v->peso == somaCor) {
-            v->bonus += 250; // Mais bonus para que essa cor seja a escolhida
+            v->bonus += 350; // Mais bonus para que essa cor seja a escolhida
         }
 
     }
@@ -215,6 +216,7 @@ int calculaBonusRec(Vertice v, Vertice pai, Grafo g, int profundidade) {
         Vertice filho = (Vertice) getConteudo(n);
         if((filho->altura > v->altura)) {
             int preBonus = filho->peso + calculaBonusRec(filho, v, g, profundidade-1);
+            Lista fFilhos = agrupaCores(filho->filhos);
             bonus += preBonus;
         }
     }

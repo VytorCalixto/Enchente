@@ -23,7 +23,7 @@ echo $HEUR
 tempo_max=120000 #120s
 
 # tamanhos do tabuleiro
-tams=(32 64 100)
+tams=(3 4 8 16)
 
 # lista de cores
 cores=(2 3 4 6 8 10)
@@ -35,7 +35,9 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m' # Sem cor
 
-echo -ne "" > tabuleiros.txt
+TABULEIROS="tabuleiros_$(basename ${HEUR}).txt"
+
+echo -ne "" > $TABULEIROS
 echo -ne "#Tam tabuleiro\t#N cores\t#Tempo médio\n" > tempos.txt
 echo -ne "#Tam tabuleiro\t#Tempo médio\n" > medias.txt
 echo -ne "#Tam tabuleiro\t#N cores\t#Tempo médio\n" > piores.txt
@@ -57,20 +59,26 @@ do
             printf "%03d" $(($T_max_cor/1000000%1000))
             echo -ne ")"\\r
             semente=$RANDOM
-            # echo "Usando semente: ${semente}"
             ./test $i $i $cor $semente
+
             T_inicial=$(date +%s%N)
-            eval $MAIN < "/tmp/${semente}.in" > /tmp/resp.out
+
+            eval $MAIN < "/tmp/${semente}.in" > "/tmp/resp${semente}.out"
+
             T_gasto=$(($(date +%s%N) - $T_inicial))
             T_soma_cor=$(($T_gasto + $T_soma_cor))
             T_soma_total=$(($T_gasto + $T_soma_total))
-            eval $HEUR < "/tmp/${semente}.in" > /tmp/heur.out
-            RESP=$(cat /tmp/resp.out | tail -n2 | head -n1)
-            HRESP=$(cat /tmp/heur.out | tail -n2 | head -n1)
+
+            eval $HEUR < "/tmp/${semente}.in" > "/tmp/heur${semente}.out"
+
+            RESP=$(cat "/tmp/resp${semente}.out" | tail -n2 | head -n1)
+            HRESP=$(cat "/tmp/heur${semente}.out" | tail -n2 | head -n1)
+
             if [ $RESP -gt $HRESP ]; then
-                echo -ne "${RED}Heurística ${HEUR} fez tabuleiro ${i} ${i} ${cor} ${semente} em ${HRESP} e nós em ${RESP}${NC}\n"
-                echo "${i} ${i} ${cor} ${semente} (${H1})" >> tabuleiros.txt
+                echo -ne "${RED}Heurística $(basename ${HEUR}) fez tabuleiro ${i} ${i} ${cor} ${semente} em ${HRESP} e nós em ${RESP}${NC}\n"
+                echo "${i} ${i} ${cor} ${semente} (${HRESP})" >> ${TABULEIROS}
             fi
+
             # tempo em segundos
             S=$(($T_gasto/1000000000))
             # tempo em milisegundos
@@ -79,13 +87,10 @@ do
             if [ $T_max_cor -lt $T_gasto ]; then
                 T_max_cor=$T_gasto
             fi
-            # if (($M>$tempo_max)); then
-            #     echo -e "\n${RED}Tabuleiro ${i} ${i} ${cor} ${semente} levou mais de ${tempo_max} milisegundos: ${S}.${M}s${NC}"
-            #     echo "${i} ${i} ${cor} ${semente}" >> tabuleiros.txt
-            # fi
+
             rm "/tmp/${semente}.in"
-            rm "/tmp/resp.out"
-            rm "/tmp/heur.out"
+            rm "/tmp/resp${semente}.out"
+            rm "/tmp/heur${semente}.out"
         done
         T_medio_cor=$(($T_soma_cor/${N_TESTES}))
         S_medio_cor=$(($T_medio_cor/1000000000))
@@ -105,10 +110,10 @@ do
     echo -e "${i}\t${M_medio_total}" >> medias.txt
 done
 
-fs=$(cat tabuleiros.txt | wc -l)
+fs=$(cat "${TABULEIROS}" | wc -l)
 if [ ${fs} -gt "1" ]; then
     echo -e "${RED}${fs} tabuleiro(s) perdeu(perderam) para outras heurísticas${NC}"
-    cat tabuleiros.txt
+    cat ${TABULEIROS}
     exit 1
 else
     echo -e "${GREEN}Nenhum tabuleiro perdeu para as outras heurísticas${NC}"

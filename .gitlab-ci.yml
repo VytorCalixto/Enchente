@@ -8,7 +8,7 @@ before_script:
 
 h1:
     stage: test
-    script: 
+    script:
         - cd tests
         - gcc -std=c99 -o test geraMapa.c
         - chmod +x runTests.sh
@@ -18,7 +18,7 @@ h1:
         - gnuplot "piores.plot"
     artifacts:
         paths:
-            - tests/tabuleiros.txt
+            - tests/tabuleiros*.txt
             - tests/tempos.txt
             - tests/medias.txt
             - tests/piores.txt
@@ -29,7 +29,7 @@ h1:
         - ubuntu
 h2:
     stage: test
-    script: 
+    script:
         - cd tests
         - gcc -std=c99 -o test geraMapa.c
         - chmod +x runTests.sh
@@ -39,7 +39,7 @@ h2:
         - gnuplot "piores.plot"
     artifacts:
         paths:
-            - tests/tabuleiros.txt
+            - tests/tabuleiros*.txt
             - tests/tempos.txt
             - tests/medias.txt
             - tests/piores.txt
@@ -51,7 +51,7 @@ h2:
 
 h4:
     stage: test
-    script: 
+    script:
         - cd tests
         - gcc -std=c99 -o test geraMapa.c
         - chmod +x runTests.sh
@@ -61,7 +61,7 @@ h4:
         - gnuplot "piores.plot"
     artifacts:
         paths:
-            - tests/tabuleiros.txt
+            - tests/tabuleiros*.txt
             - tests/tempos.txt
             - tests/medias.txt
             - tests/piores.txt
@@ -73,7 +73,7 @@ h4:
 
 h6:
     stage: test
-    script: 
+    script:
         - cd tests
         - gcc -std=c99 -o test geraMapa.c
         - chmod +x runTests.sh
@@ -83,7 +83,7 @@ h6:
         - gnuplot "piores.plot"
     artifacts:
         paths:
-            - tests/tabuleiros.txt
+            - tests/tabuleiros*.txt
             - tests/tempos.txt
             - tests/medias.txt
             - tests/piores.txt
