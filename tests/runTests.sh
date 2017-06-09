@@ -47,9 +47,13 @@ do
             T_soma_total=$(($T_gasto + $T_soma_total))
             ./floodit_h1 < "/tmp/${semente}.in" > /tmp/h1.out
             ./floodit_h2 < "/tmp/${semente}.in" > /tmp/h2.out
+            ./floodit_h4 < "/tmp/${semente}.in" > /tmp/h4.out
+            ./floodit_h6 < "/tmp/${semente}.in" > /tmp/h6.out
             RESP=$(cat /tmp/resp.out | head -n1)
             H1=$(cat /tmp/h1.out | tail -n2 | head -n1)
             H2=$(cat /tmp/h2.out | tail -n2 | head -n1)
+            H4=$(cat /tmp/h4.out | tail -n2 | head -n1)
+            H6=$(cat /tmp/h6.out | tail -n2 | head -n1)
             if [ $RESP -gt $H1 ]; then
                 echo -ne "${RED}Heurística h1 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H1} e nós em ${RESP}${NC}\n"
                 echo "${i} ${i} ${cor} ${semente} (h1: ${H1})" >> tabuleiros.txt
@@ -57,6 +61,14 @@ do
             if [ $RESP -gt $H2 ]; then
                 echo -ne "${RED}Heurística h2 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H2} e nós em ${RESP}${NC}\n"
                 echo "${i} ${i} ${cor} ${semente} (h2: ${H2})" >> tabuleiros.txt
+            fi
+            if [ $RESP -gt $H4 ]; then
+                echo -ne "${RED}Heurística h4 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H4} e nós em ${RESP}${NC}\n"
+                echo "${i} ${i} ${cor} ${semente} (h4: ${H4})" >> tabuleiros.txt
+            fi
+            if [ $RESP -gt $H6 ]; then
+                echo -ne "${RED}Heurística h6 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H6} e nós em ${RESP}${NC}\n"
+                echo "${i} ${i} ${cor} ${semente} (h6: ${H6})" >> tabuleiros.txt
             fi
             # tempo em segundos
             S=$(($T_gasto/1000000000))
@@ -74,6 +86,8 @@ do
             rm "/tmp/resp.out"
             rm "/tmp/h1.out"
             rm "/tmp/h2.out"
+            rm "/tmp/h4.out"
+            rm "/tmp/h6.out"
         done
         T_medio_cor=$(($T_soma_cor/${N_TESTES}))
         S_medio_cor=$(($T_medio_cor/1000000000))
