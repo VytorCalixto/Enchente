@@ -1,10 +1,29 @@
 #!/bin/bash
 
+OPTIND=1
+MAIN="../main"
+HEUR="./floodit_h6"
+
+while getopts ":m:h:" opt; do
+    case "$opt" in
+        m)  MAIN=$OPTARG
+            ;;
+        h)  HEUR=$OPTARG
+            ;;
+    esac
+done
+
+shift $((OPTIND-1))
+[ "$1" = "--" ] && shift
+
+echo $MAIN
+echo $HEUR
+
 # tempo máximo para executar, em milisegundos
 tempo_max=120000 #120s
 
 # tamanhos do tabuleiro
-tams=(3 4 8 16 32 64 100)
+tams=(32 64 100)
 
 # lista de cores
 cores=(2 3 4 6 8 10)
@@ -41,34 +60,16 @@ do
             # echo "Usando semente: ${semente}"
             ./test $i $i $cor $semente
             T_inicial=$(date +%s%N)
-            ../main < "/tmp/${semente}.in" > /tmp/resp.out
+            eval $MAIN < "/tmp/${semente}.in" > /tmp/resp.out
             T_gasto=$(($(date +%s%N) - $T_inicial))
             T_soma_cor=$(($T_gasto + $T_soma_cor))
             T_soma_total=$(($T_gasto + $T_soma_total))
-            ./floodit_h1 < "/tmp/${semente}.in" > /tmp/h1.out
-            ./floodit_h2 < "/tmp/${semente}.in" > /tmp/h2.out
-            ./floodit_h4 < "/tmp/${semente}.in" > /tmp/h4.out
-            ./floodit_h6 < "/tmp/${semente}.in" > /tmp/h6.out
-            RESP=$(cat /tmp/resp.out | head -n1)
-            H1=$(cat /tmp/h1.out | tail -n2 | head -n1)
-            H2=$(cat /tmp/h2.out | tail -n2 | head -n1)
-            H4=$(cat /tmp/h4.out | tail -n2 | head -n1)
-            H6=$(cat /tmp/h6.out | tail -n2 | head -n1)
-            if [ $RESP -gt $H1 ]; then
-                echo -ne "${RED}Heurística h1 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H1} e nós em ${RESP}${NC}\n"
-                echo "${i} ${i} ${cor} ${semente} (h1: ${H1})" >> tabuleiros.txt
-            fi
-            if [ $RESP -gt $H2 ]; then
-                echo -ne "${RED}Heurística h2 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H2} e nós em ${RESP}${NC}\n"
-                echo "${i} ${i} ${cor} ${semente} (h2: ${H2})" >> tabuleiros.txt
-            fi
-            if [ $RESP -gt $H4 ]; then
-                echo -ne "${RED}Heurística h4 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H4} e nós em ${RESP}${NC}\n"
-                echo "${i} ${i} ${cor} ${semente} (h4: ${H4})" >> tabuleiros.txt
-            fi
-            if [ $RESP -gt $H6 ]; then
-                echo -ne "${RED}Heurística h6 fez tabuleiro ${i} ${i} ${cor} ${semente} em ${H6} e nós em ${RESP}${NC}\n"
-                echo "${i} ${i} ${cor} ${semente} (h6: ${H6})" >> tabuleiros.txt
+            eval $HEUR < "/tmp/${semente}.in" > /tmp/heur.out
+            RESP=$(cat /tmp/resp.out | tail -n2 | head -n1)
+            HRESP=$(cat /tmp/heur.out | tail -n2 | head -n1)
+            if [ $RESP -gt $HRESP ]; then
+                echo -ne "${RED}Heurística ${HEUR} fez tabuleiro ${i} ${i} ${cor} ${semente} em ${HRESP} e nós em ${RESP}${NC}\n"
+                echo "${i} ${i} ${cor} ${semente} (${H1})" >> tabuleiros.txt
             fi
             # tempo em segundos
             S=$(($T_gasto/1000000000))
@@ -84,10 +85,7 @@ do
             # fi
             rm "/tmp/${semente}.in"
             rm "/tmp/resp.out"
-            rm "/tmp/h1.out"
-            rm "/tmp/h2.out"
-            rm "/tmp/h4.out"
-            rm "/tmp/h6.out"
+            rm "/tmp/heur.out"
         done
         T_medio_cor=$(($T_soma_cor/${N_TESTES}))
         S_medio_cor=$(($T_medio_cor/1000000000))

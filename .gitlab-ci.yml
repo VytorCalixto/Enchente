@@ -6,11 +6,78 @@ before_script:
     - apt-get -y install build-essential make autoconf gcc gnuplot
     - make
 
-test:
+h1:
     stage: test
-    script:
-        - make test
+    script: 
         - cd tests
+        - gcc -std=c99 -o test geraMapa.c
+        - chmod +x runTests.sh
+        - ./runTests.sh -h "./floodit_h1"
+        - gnuplot "tempos.plot"
+        - gnuplot "medias.plot"
+        - gnuplot "piores.plot"
+    artifacts:
+        paths:
+            - tests/tabuleiros.txt
+            - tests/tempos.txt
+            - tests/medias.txt
+            - tests/piores.txt
+            - tests/tempos.png
+            - tests/medias.png
+            - tests/piores.png
+    tags:
+        - ubuntu
+h2:
+    stage: test
+    script: 
+        - cd tests
+        - gcc -std=c99 -o test geraMapa.c
+        - chmod +x runTests.sh
+        - ./runTests.sh -h "./floodit_h2"
+        - gnuplot "tempos.plot"
+        - gnuplot "medias.plot"
+        - gnuplot "piores.plot"
+    artifacts:
+        paths:
+            - tests/tabuleiros.txt
+            - tests/tempos.txt
+            - tests/medias.txt
+            - tests/piores.txt
+            - tests/tempos.png
+            - tests/medias.png
+            - tests/piores.png
+    tags:
+        - ubuntu
+
+h4:
+    stage: test
+    script: 
+        - cd tests
+        - gcc -std=c99 -o test geraMapa.c
+        - chmod +x runTests.sh
+        - ./runTests.sh -h "./floodit_h4"
+        - gnuplot "tempos.plot"
+        - gnuplot "medias.plot"
+        - gnuplot "piores.plot"
+    artifacts:
+        paths:
+            - tests/tabuleiros.txt
+            - tests/tempos.txt
+            - tests/medias.txt
+            - tests/piores.txt
+            - tests/tempos.png
+            - tests/medias.png
+            - tests/piores.png
+    tags:
+        - ubuntu
+
+h6:
+    stage: test
+    script: 
+        - cd tests
+        - gcc -std=c99 -o test geraMapa.c
+        - chmod +x runTests.sh
+        - ./runTests.sh -h "./floodit_h6"
         - gnuplot "tempos.plot"
         - gnuplot "medias.plot"
         - gnuplot "piores.plot"
