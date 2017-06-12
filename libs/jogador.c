@@ -17,7 +17,9 @@ Lista Joga(Grafo g, Lista grupo){
         int altura = calculaAltura(g, grupo);
 
         int naoConsumidos = tamanhoLista(g->vertices) - tamanhoLista(grupo);
-        int profundidade = (sqrt(max) * (sqrt(altura) / sqrt(min)) * 1); //(altura/sqrt(naoConsumidos)));
+        double razao = (altura/sqrt(naoConsumidos));
+        int profundidade = (sqrt(max) * (sqrt(altura) / sqrt(min)) * razao);
+        if(profundidade < 1) profundidade = 1;
 
         Lista filhos = filhosGrupo(grupo);
 
