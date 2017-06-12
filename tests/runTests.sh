@@ -114,8 +114,6 @@ fs=$(cat "${TABULEIROS}" | wc -l)
 if [ ${fs} -gt "1" ]; then
     echo -e "${RED}${fs} tabuleiro(s) perdeu(perderam) para outras heurísticas${NC}"
     cat ${TABULEIROS}
-    exit 1
 else
     echo -e "${GREEN}Nenhum tabuleiro perdeu para as outras heurísticas${NC}"
-    exit 0
 fi
