@@ -15,18 +15,22 @@ No criaNo() {
 }
 
 No getSucessorNo(No n) {
+    if(!n) return NULL;
     return n->proximo;
 }
 
 void setSucessorNo(No n, No p) {
+    if(!n) return;
     n->proximo = p;
 }
 
 No getAntecessorNo(No n) {
+    if(!n) return NULL;
     return n->anterior;
 }
 
 void setAntecessorNo(No n, No p) {
+    if(!n) return;
     n->anterior = p;
 }
 

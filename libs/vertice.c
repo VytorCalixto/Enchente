@@ -9,7 +9,9 @@ Vertice criaVertice() {
     v->cor = -1;
     v->peso = 0;
     v->bonus = 0;
+    v->altura = -1;
     v->grupo = false;
+    v->visitado = false;
     v->pais = constroiLista();
     v->filhos = constroiLista();
     return v;

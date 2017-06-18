@@ -26,6 +26,7 @@ No primeiroNoFilha(Filha f) {
     }
     No n = f->primeiro;
     f->primeiro = getSucessorNo(f->primeiro);
+    --f->tamanho;
     setSucessorNo(n, NULL);
     setAntecessorNo(n, NULL);
     return n;
@@ -37,6 +38,7 @@ No ultimoNoFilha(Filha f) {
     }
     No n = f->ultimo;
     f->ultimo = getAntecessorNo(f->ultimo);
+    --f->tamanho;
     setSucessorNo(n, NULL);
     setAntecessorNo(n, NULL);
     return n;
@@ -48,7 +50,14 @@ No insereFilha(void *conteudo, Filha f) {
     if(!novo) return NULL;
 
     setConteudo(novo, conteudo);
+
+    if(f->tamanho == 0) {
+        f->primeiro = novo;
+    }
+
     setAntecessorNo(novo, f->ultimo);
+    setSucessorNo(f->ultimo, novo);
+
     ++f->tamanho;
     return f->ultimo = novo;
 }

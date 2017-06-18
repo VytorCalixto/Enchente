@@ -23,10 +23,10 @@ echo $HEUR
 tempo_max=120000 #120s
 
 # tamanhos do tabuleiro
-tams=(64)
+tams=()
 
 # lista de cores
-cores=(10)
+cores=()
 
 #-- Cores do terminal
 RED='\033[0;31m'

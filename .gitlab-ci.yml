@@ -5,18 +5,134 @@ before_script:
     - apt-get update
     - apt-get -y install build-essential make autoconf gcc gnuplot
     - make
+    - mv tests/runTests.sh.example tests/runTests.sh
+    - chmod +x tests/runTests.sh
+    - chmod +x tests/verifica
+    - gcc -std=c99 -o tests/test tests/geraMapa.c
 
-test:
+h1:
     stage: test
     script:
-        - make test
         - cd tests
+        - sed -i -e 's/tams=()/tams=(4 8 16 32 64)/g' runTests.sh
+        - sed -i -e 's/cores=()/cores=(3 4 6 8 10)/g' runTests.sh
+        - ./runTests.sh -h "./floodit_h1"
         - gnuplot "tempos.plot"
         - gnuplot "medias.plot"
         - gnuplot "piores.plot"
     artifacts:
         paths:
-            - tests/tabuleiros.txt
+            - tests/tabuleiros*.txt
+            - tests/tempos.txt
+            - tests/medias.txt
+            - tests/piores.txt
+            - tests/tempos.png
+            - tests/medias.png
+            - tests/piores.png
+    tags:
+        - ubuntu
+h2:
+    stage: test
+    script:
+        - cd tests
+        - sed -i -e 's/tams=()/tams=(4 8 16 32 64)/g' runTests.sh
+        - sed -i -e 's/cores=()/cores=(3 4 6 8 10)/g' runTests.sh
+        - ./runTests.sh -h "./floodit_h2"
+        - gnuplot "tempos.plot"
+        - gnuplot "medias.plot"
+        - gnuplot "piores.plot"
+    artifacts:
+        paths:
+            - tests/tabuleiros*.txt
+            - tests/tempos.txt
+            - tests/medias.txt
+            - tests/piores.txt
+            - tests/tempos.png
+            - tests/medias.png
+            - tests/piores.png
+    tags:
+        - ubuntu
+h4-min:
+    stage: test
+    script:
+        - cd tests
+        - sed -i -e 's/tams=()/tams=(4 8 16 32)/g' runTests.sh
+        - sed -i -e 's/cores=()/cores=(3 4 8 10)/g' runTests.sh
+        - ./runTests.sh -h "./floodit_h4"
+        - gnuplot "tempos.plot"
+        - gnuplot "medias.plot"
+        - gnuplot "piores.plot"
+    artifacts:
+        paths:
+            - tests/tabuleiros*.txt
+            - tests/tempos.txt
+            - tests/medias.txt
+            - tests/piores.txt
+            - tests/tempos.png
+            - tests/medias.png
+            - tests/piores.png
+    tags:
+        - ubuntu
+
+h4-max:
+    stage: test
+    script:
+        - cd tests
+        - sed -i -e 's/tams=()/tams=(64 100)/g' runTests.sh
+        - sed -i -e 's/cores=()/cores=(10)/g' runTests.sh
+        - sed -i -e 's/N_TESTES=100/N_TESTES=50/g' runTests.sh
+        - ./runTests.sh -h "./floodit_h4"
+        - gnuplot "tempos.plot"
+        - gnuplot "medias.plot"
+        - gnuplot "piores.plot"
+    artifacts:
+        paths:
+            - tests/tabuleiros*.txt
+            - tests/tempos.txt
+            - tests/medias.txt
+            - tests/piores.txt
+            - tests/tempos.png
+            - tests/medias.png
+            - tests/piores.png
+    tags:
+        - ubuntu
+
+h6-min:
+    stage: test
+    script:
+        - cd tests
+        - sed -i -e 's/tams=()/tams=(4 8 16 32)/g' runTests.sh
+        - sed -i -e 's/cores=()/cores=(3 4 8 10)/g' runTests.sh
+        - ./runTests.sh -h "./floodit_h6"
+        - gnuplot "tempos.plot"
+        - gnuplot "medias.plot"
+        - gnuplot "piores.plot"
+    artifacts:
+        paths:
+            - tests/tabuleiros*.txt
+            - tests/tempos.txt
+            - tests/medias.txt
+            - tests/piores.txt
+            - tests/tempos.png
+            - tests/medias.png
+            - tests/piores.png
+    tags:
+        - ubuntu
+
+h6-max:
+    stage: test
+    script:
+        - cd tests
+        - sed -i -e 's/tams=()/tams=(64 100)/g' runTests.sh
+        - sed -i -e 's/cores=()/cores=(10)/g' runTests.sh
+        - sed -i -e 's/N_TESTES=100/N_TESTES=50/g' runTests.sh
+        - ./runTests.sh -h "./floodit_h6"
+        - gnuplot "tempos.plot"
+        - gnuplot "medias.plot"
+        - gnuplot "piores.plot"
+    artifacts:
+        paths:
+            - tests/tabuleiros*.txt
             - tests/tempos.txt
             - tests/medias.txt
             - tests/piores.txt
