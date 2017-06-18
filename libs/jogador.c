@@ -17,7 +17,9 @@ Lista Joga(Grafo g, Lista grupo){
         int altura = calculaAltura(g, grupo);
 
         int naoConsumidos = tamanhoLista(g->vertices) - tamanhoLista(grupo);
-        int profundidade = (sqrt(max) * (sqrt(altura) / sqrt(min)) * (altura/sqrt(naoConsumidos)));
+        double razao = (altura/sqrt(naoConsumidos));
+        int profundidade = (sqrt(max) * (sqrt(altura) / sqrt(min)) * razao);
+        if(profundidade < 1) profundidade = 1;
 
         Lista filhos = filhosGrupo(grupo);
 
@@ -44,6 +46,10 @@ Lista Joga(Grafo g, Lista grupo){
             } else if((v->bonus) == (maior->bonus)) {
                 if(v->peso > maior->peso) {
                     maior = v;
+                } else if(v->peso == maior->peso) {
+                    if(v->cor < maior->cor) {
+                        maior = v;
+                    }
                 }
             }
         }
@@ -146,7 +152,7 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
             Vertice filho = (Vertice) getConteudo(m);
             if((filho->altura > v->altura)) {
                 int bonus = filho->peso + calculaBonusRec(filho, v, g, profundidade);
-                if(corEstaNaLista(grupo, filho->cor)) bonus += 100;
+                if(corEstaNaLista(grupo, filho->cor)) bonus += 50;
                 v->bonus += bonus;
             }
         }
@@ -169,7 +175,7 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
                 v->bonus += 150;
             }
         }
-        destroiLista(vFilhos, NULL);
+        destroiLista(vFilhos, destroiVertice);
 
         int menorDistancia = v->altura;
         for(No m = primeiroNoLista(g->vertices); m; m = getSucessorNo(m)) {
@@ -180,7 +186,6 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
                 if((w->altura < menorDistancia) || (menorDistancia == v->altura)) menorDistancia = w->altura;
             }
         }
-        v->bonus += (menorDistancia - v->altura)^2;
 
         for(No m = primeiroNoLista(v->pais); m; m = getSucessorNo(m)) {
             Vertice pai = (Vertice) getConteudo(m);
