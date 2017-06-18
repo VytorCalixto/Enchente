@@ -12,14 +12,19 @@ Lista Joga(Grafo g, Lista grupo){
     double max = 2*(g->x) + (sqrt(2*g->cores))*(g->x) + g->cores;
     double min = (sqrt(g->cores - 1)*g->x/2) - (g->cores/2);
     if (min < 1) min = 1;
+    int altura = calculaAltura(g, grupo);
+    int naoConsumidos = tamanhoLista(g->vertices) - tamanhoLista(grupo);
+    double razao = (altura/sqrt(naoConsumidos));
+    int profundidade = (sqrt(max) * (sqrt(altura) / sqrt(min)) * razao);
+    if(profundidade < 1) profundidade = 1;
     while(tamanhoLista(grupo) < tamanhoLista(g->vertices)) {
         // Calcula a altura
-        int altura = calculaAltura(g, grupo);
+        altura = calculaAltura(g, grupo);
 
-        int naoConsumidos = tamanhoLista(g->vertices) - tamanhoLista(grupo);
-        double razao = (altura/sqrt(naoConsumidos));
-        int profundidade = (sqrt(max) * (sqrt(altura) / sqrt(min)) * razao);
-        if(profundidade < 1) profundidade = 1;
+        // int naoConsumidos = tamanhoLista(g->vertices) - tamanhoLista(grupo);
+        // double razao = (altura/sqrt(naoConsumidos))*1.5;
+        // int profundidade = (sqrt(max) * (sqrt(altura) / sqrt(min)) * razao);
+        // if(profundidade < 1) profundidade = 1;
 
         Lista filhos = filhosGrupo(grupo);
 
