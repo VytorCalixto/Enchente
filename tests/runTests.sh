@@ -87,6 +87,7 @@ do
                     echo -ne "${RED}Nossa resposta para ${i} ${i} ${cor} ${semente} não é válida!!!${NC}\n\n"
                 fi
                 VIT=$(($VIT + 1))
+
             fi
             # tempo em segundos
             S=$(($T_gasto/1000000000))
@@ -104,6 +105,7 @@ do
             echo -ne "Tabuleiro ${i}x${i} com ${cor} cores: (${j}/${N_TESTES}) (T max: $(($T_max_cor/1000000000))."
             printf "%03d" $(($T_max_cor/1000000%1000))
             echo -ne ") (${GREEN}${VIT}${NC}/${BLUE}${EMP}${NC}/${RED}${DER}${NC})"\\r
+
         done
         T_medio_cor=$(($T_soma_cor/${N_TESTES}))
         S_medio_cor=$(($T_medio_cor/1000000000))
@@ -130,3 +132,4 @@ if [ ${fs} -gt "1" ]; then
 else
     echo -e "${GREEN}Nenhum tabuleiro perdeu para as outras heurísticas${NC}"
 fi
+
