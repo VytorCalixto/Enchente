@@ -1,0 +1,39 @@
+==CI209==
+ALUNOS:
+    - Luiza Maria Wille Culau (GRR20141014)
+    - Vytor dos Santos Bezerra Calixto (GRR20144434)
+
+IMPLEMENTAÇÃO:
+
+No nosso trabalho, transformamos o tabuleiro em grafo e sobre o grafo aplicamos
+nossas heurísticas. Para a jogada atual, agrupamos os vértices do grafo que são
+uma possível escolha e, de início, utilizamos a soma do peso (número de células)
+de uma cor mais um "bônus" (quantidade de células vizinhas) para determinar qual
+cor seria consumida.
+
+Essa heurística funcionou razoalvelmente bem no começo. No entanto, percebemos
+que o peso de uma cor não influenciava muito na decisão. Assim, paramos de
+utilizar o peso e passamos a usar apenas o "bônus", ou seja, escolhíamos uma cor
+baseada na quantidade de células vizinhas não consumidas que ela alcançava no
+grafo. Isso trouxe uma melhora na heurística e se tornou a base do nosso
+pensamento. Entretanto, estávamos olhando apenas as cores vizinhas uma jogada a
+frente e tínhamos muito tempo de processamento disponível. Por isso, decidimos
+passar a olhar mais jogadas a frente.
+
+Ao realizar uma busca em largura no grafo a partir da célula inicial, conseguimos
+determinar com clareza quantas jogadas a frente iríamos olhar. Passamos a aumentar
+o altura da busca até encontrarmos uma boa relação entre tempo e qualidade do
+resultado. Entretanto, um valor bom para um tabuleiro não necessariamente era
+bom para todos. Acabamos nos deparando com o artigo The Complexity of Flood 
+Filling Games (https://arxiv.org/abs/1001.4420) que provê uma aproximação dos
+números máximo e mínimo de jogadas para um tabuleiro de flood-it (teoremas 5 e 6).
+Com esses valores, passamos a brincar com os dados disponíveis (altura da árvore
+de busca em largura, vértices no grafo, número de cores) para obter um valor de
+profundidade para observar as jogadas. Desta forma, para cada tabuleiro, nossa
+heurística determina até qual altura irá observar e utiliza como base de escolha
+o peso da subárvore de um vértice.
+
+As únicas exceções na escolha da heurística são:
+1) Se há uma cor que pode "acabar" na jogada atual, ela será a escolhida
+2) Se há uma cor que pode "acabar" uma jogada a frente, a(s) cor(es) que atingem
+ela ganham mais bônus.
