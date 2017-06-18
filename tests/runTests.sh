@@ -23,7 +23,7 @@ echo $HEUR
 tempo_max=120000 #120s
 
 # tamanhos do tabuleiro
-tams=(4 8 16 32)
+tams=(64 100)
 
 # lista de cores
 cores=(4 8 10)
@@ -58,9 +58,6 @@ do
         DER=0
         for j in $(seq 1 ${N_TESTES})
         do
-            echo -ne "Tabuleiro ${i}x${i} com ${cor} cores: (${j}/${N_TESTES}) (T max: $(($T_max_cor/1000000000))."
-            printf "%03d" $(($T_max_cor/1000000%1000))
-            echo -ne ") (${GREEN}${VIT}${NC}/${BLUE}${EMP}${NC}/${RED}${DER}${NC})"\\r
             semente=$RANDOM
             ./test $i $i $cor $semente
 
@@ -78,16 +75,17 @@ do
             HRESP=$(cat "/tmp/heur${semente}.out" | tail -n2 | head -n1)
 
             if [ $RESP -gt $HRESP ]; then
-                #echo -ne "${RED}Heurística $(basename ${HEUR}) fez tabuleiro ${i} ${i} ${cor} ${semente} em ${HRESP} e nós em ${RESP}${NC}\n"
                 echo "${i} ${i} ${cor} ${semente} (${HRESP})" >> ${TABULEIROS}
                 DER=$(($DER + 1))
             fi
             if [ $RESP -eq $HRESP ]; then
-                #echo -ne "${BLUE}Empatamos com $(basename ${HEUR}) no tabuleiro ${i} ${i} ${cor} ${semente} em ${HRESP}${NC}\n"
                 EMP=$(($EMP + 1))
             fi
             if [ $RESP -lt $HRESP ]; then
-                #echo -ne "${GREEN}Ganhamos de  $(basename ${HEUR}) no tabuleiro ${i} ${i} ${cor} ${semente} com ${RESP}${NC}\n"
+                VALIDO=$(cat "/tmp/${semente}.in" "/tmp/resp${semente}.out" | ./verifica)
+                if [[ $VALIDO -eq 1 ]]; then
+                    echo -ne "${RED}Nossa resposta para ${i} ${i} ${cor} ${semente} não é válida!!!${NC}\n\n"
+                fi
                 VIT=$(($VIT + 1))
             fi
             # tempo em segundos
@@ -102,6 +100,10 @@ do
             rm "/tmp/${semente}.in"
             rm "/tmp/resp${semente}.out"
             rm "/tmp/heur${semente}.out"
+
+            echo -ne "Tabuleiro ${i}x${i} com ${cor} cores: (${j}/${N_TESTES}) (T max: $(($T_max_cor/1000000000))."
+            printf "%03d" $(($T_max_cor/1000000%1000))
+            echo -ne ") (${GREEN}${VIT}${NC}/${BLUE}${EMP}${NC}/${RED}${DER}${NC})"\\r
         done
         T_medio_cor=$(($T_soma_cor/${N_TESTES}))
         S_medio_cor=$(($T_medio_cor/1000000000))

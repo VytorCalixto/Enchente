@@ -5,13 +5,14 @@ before_script:
     - apt-get update
     - apt-get -y install build-essential make autoconf gcc gnuplot
     - make
+    - chmod +x tests/runTests.sh
+    - chmod +x tests/verifica
+    - gcc -std=c99 -o tests/test tests/geraMapa.c
 
 h1:
     stage: test
     script:
         - cd tests
-        - gcc -std=c99 -o test geraMapa.c
-        - chmod +x runTests.sh
         - ./runTests.sh -h "./floodit_h1"
         - gnuplot "tempos.plot"
         - gnuplot "medias.plot"
@@ -31,8 +32,6 @@ h2:
     stage: test
     script:
         - cd tests
-        - gcc -std=c99 -o test geraMapa.c
-        - chmod +x runTests.sh
         - ./runTests.sh -h "./floodit_h2"
         - gnuplot "tempos.plot"
         - gnuplot "medias.plot"
@@ -53,8 +52,6 @@ h4:
     stage: test
     script:
         - cd tests
-        - gcc -std=c99 -o test geraMapa.c
-        - chmod +x runTests.sh
         - ./runTests.sh -h "./floodit_h4"
         - gnuplot "tempos.plot"
         - gnuplot "medias.plot"
@@ -75,8 +72,6 @@ h6:
     stage: test
     script:
         - cd tests
-        - gcc -std=c99 -o test geraMapa.c
-        - chmod +x runTests.sh
         - ./runTests.sh -h "./floodit_h6"
         - gnuplot "tempos.plot"
         - gnuplot "medias.plot"
