@@ -184,10 +184,10 @@ void grafoParaDot(Grafo g, Lista grupo, FILE* fp) {
     // Imprime o grafo
     for(No n = primeiroNoLista(g->vertices); n; n = getSucessorNo(n)) {
         Vertice pai = (Vertice) getConteudo(n);
-        fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\nbonus=%d\naltura=%d\"];\n", pai, pai->cor, pai->peso, pai->bonus, pai->altura);
+        fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\nbonus=%lu\naltura=%d\"];\n", pai, pai->cor, pai->peso, pai->bonus, pai->altura);
         for(No m = primeiroNoLista(pai->filhos); m; m = getSucessorNo(m)) {
             Vertice filho = (Vertice) getConteudo(m);
-            fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\nbonus=%d\naltura=%d\"];\n", filho, filho->cor, filho->peso, filho->bonus, filho->altura);
+            fprintf(fp, "\t\"%p\" [label=\"cor=%d\npeso=%d\nbonus=%lu\naltura=%d\"];\n", filho, filho->cor, filho->peso, filho->bonus, filho->altura);
             fprintf(fp, "\t\"%p\" -- \"%p\";\n", pai, filho);
         }
     }

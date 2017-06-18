@@ -54,7 +54,7 @@ Lista Joga(Grafo g, Lista grupo){
             }
         }
         // printf("\t\tCOR ESCOLHIDA: %d\n", maior->cor);
-        insereLista(maior->cor, jogadas);
+        insereLista((void *) maior->cor, jogadas);
 
         for(No n = primeiroNoLista(filhos); n; n = getSucessorNo(n)) {
             Vertice v = (Vertice) getConteudo(n);
@@ -145,6 +145,18 @@ bool corEstaNaLista(Lista l, int cor) {
     return false;
 }
 
+int calculaBonusRec(Vertice v, Grafo g, int profundidade) {
+    if(profundidade <= 0) return 0;
+    int bonus = 0;
+    for(No n = primeiroNoLista(v->filhos); n; n = getSucessorNo(n)) {
+        Vertice filho = (Vertice) getConteudo(n);
+        if((filho->altura > v->altura)) {
+            bonus += filho->peso + calculaBonusRec(filho, g, profundidade-1);
+        }
+    }
+    return v->bonus = bonus;
+}
+
 void calculaBonus(Lista grupo, Grafo g, int profundidade) {
     for(No n = primeiroNoLista(grupo); n; n = getSucessorNo(n)) {
         Vertice v = (Vertice) getConteudo(n);
@@ -152,7 +164,7 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
         for(No m = primeiroNoLista(v->filhos); m; m = getSucessorNo(m)) {
             Vertice filho = (Vertice) getConteudo(m);
             if((filho->altura > v->altura)) {
-                int bonus = filho->peso + calculaBonusRec(filho, v, g, profundidade);
+                int bonus = filho->peso + calculaBonusRec(filho, g, profundidade);
                 if(corEstaNaLista(grupo, filho->cor)) bonus += 50;
                 v->bonus += bonus;
             }
@@ -212,16 +224,4 @@ void calculaBonus(Lista grupo, Grafo g, int profundidade) {
     }
 
     return;
-}
-
-int calculaBonusRec(Vertice v, Vertice pai, Grafo g, int profundidade) {
-    if(profundidade <= 0) return 0;
-    int bonus = 0;
-    for(No n = primeiroNoLista(v->filhos); n; n = getSucessorNo(n)) {
-        Vertice filho = (Vertice) getConteudo(n);
-        if((filho->altura > v->altura)) {
-            bonus += filho->peso + calculaBonusRec(filho, v, g, profundidade-1);
-        }
-    }
-    return v->bonus = bonus;
 }
