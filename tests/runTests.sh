@@ -23,10 +23,10 @@ echo $HEUR
 tempo_max=120000 #120s
 
 # tamanhos do tabuleiro
-tams=(3 4 8 16)
+tams=(4 8 16 32)
 
 # lista de cores
-cores=(2 3 4 6 8 10)
+cores=(4 8 10)
 
 #-- Cores do terminal
 RED='\033[0;31m'
@@ -52,12 +52,15 @@ do
         echo "Número de cores: ${cor}"
         T_soma_cor=0
         T_max_cor=0
-        N_TESTES=500
+        N_TESTES=100
+        VIT=0
+        EMP=0
+        DER=0
         for j in $(seq 1 ${N_TESTES})
         do
             echo -ne "Tabuleiro ${i}x${i} com ${cor} cores: (${j}/${N_TESTES}) (T max: $(($T_max_cor/1000000000))."
             printf "%03d" $(($T_max_cor/1000000%1000))
-            echo -ne ")"\\r
+            echo -ne ") (${GREEN}${VIT}${NC}/${BLUE}${EMP}${NC}/${RED}${DER}${NC})"\\r
             semente=$RANDOM
             ./test $i $i $cor $semente
 
@@ -75,10 +78,18 @@ do
             HRESP=$(cat "/tmp/heur${semente}.out" | tail -n2 | head -n1)
 
             if [ $RESP -gt $HRESP ]; then
-                echo -ne "${RED}Heurística $(basename ${HEUR}) fez tabuleiro ${i} ${i} ${cor} ${semente} em ${HRESP} e nós em ${RESP}${NC}\n"
+                #echo -ne "${RED}Heurística $(basename ${HEUR}) fez tabuleiro ${i} ${i} ${cor} ${semente} em ${HRESP} e nós em ${RESP}${NC}\n"
                 echo "${i} ${i} ${cor} ${semente} (${HRESP})" >> ${TABULEIROS}
+                DER=$(($DER + 1))
             fi
-
+            if [ $RESP -eq $HRESP ]; then
+                #echo -ne "${BLUE}Empatamos com $(basename ${HEUR}) no tabuleiro ${i} ${i} ${cor} ${semente} em ${HRESP}${NC}\n"
+                EMP=$(($EMP + 1))
+            fi
+            if [ $RESP -lt $HRESP ]; then
+                #echo -ne "${GREEN}Ganhamos de  $(basename ${HEUR}) no tabuleiro ${i} ${i} ${cor} ${semente} com ${RESP}${NC}\n"
+                VIT=$(($VIT + 1))
+            fi
             # tempo em segundos
             S=$(($T_gasto/1000000000))
             # tempo em milisegundos

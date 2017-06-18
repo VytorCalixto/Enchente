@@ -216,7 +216,6 @@ int calculaBonusRec(Vertice v, Vertice pai, Grafo g, int profundidade) {
         Vertice filho = (Vertice) getConteudo(n);
         if((filho->altura > v->altura)) {
             int preBonus = filho->peso + calculaBonusRec(filho, v, g, profundidade-1);
-            Lista fFilhos = agrupaCores(filho->filhos);
             bonus += preBonus;
         }
     }
