@@ -23,7 +23,7 @@ echo $HEUR
 tempo_max=120000 #120s
 
 # tamanhos do tabuleiro
-tams=(100)
+tams=(64)
 
 # lista de cores
 cores=(10)
